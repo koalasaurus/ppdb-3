@@ -23,6 +23,8 @@
                 <tr>
                     <th>Nama</th>
                     <th>Email</th>
+                    <th>Alamat</th>
+                    <th>Asal Sekolah</th>
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>
@@ -32,13 +34,16 @@
                 <tr>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>{{ user.school }}</td>
                     <td>{{ user.status }}</td>
                     <td>
-                        <form method="POST">
+                        <form method="POST" style="display: inline;">
                             <input type="hidden" name="user_id" value="{{ user.id }}">
                             <button type="submit" name="action" value="approve">Terima</button>
                             <button type="submit" name="action" value="reject">Tolak</button>
                         </form>
+                        <a href="{{ url_for('user_detail', user_id=user.id) }}" class="btn-detail">Detail</a>
                     </td>
                 </tr>
                 {% endfor %}

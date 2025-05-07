@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from models import db, User, Admin, Notification  # Import db, User, dan Admin dari models.py
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -7,6 +8,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 
 # Inisialisasi database
 db.init_app(app)
+migrate = Migrate(app, db)
 
 # Homepage
 @app.route('/')
@@ -17,8 +19,14 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        name = request.form['name']
+        print(request.form)  # Debug: Periksa data yang diterima dari form
         email = request.form['email']
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Email sudah terdaftar. Gunakan email lain.')
+            return redirect(url_for('register'))
+        # Lanjutkan proses registrasi
+        name = request.form['name']
         password = request.form['password']
         user = User(name=name, email=email, password=password)
         db.session.add(user)
@@ -33,12 +41,14 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user = User.query.filter_by(email=email, password=password).first()
-        if user:
-            if user.email == 'admin@example.com':  # Admin login
-                return redirect(url_for('dashboard_admin'))
-            return redirect(url_for('dashboard_user', user_id=user.id))
-        flash('Email atau password salah.')
+        user = User.query.filter_by(email=email).first()
+        if not user or user.password != password:
+            flash('Email atau password salah.')
+            return redirect(url_for('login'))
+        session['user_id'] = user.id
+        if user.email == 'admin@example.com':  # Admin login
+            return redirect(url_for('dashboard_admin'))
+        return redirect(url_for('dashboard_user', user_id=user.id))
     return render_template('login.html')
 
 # Formulir Pendaftaran
@@ -104,7 +114,20 @@ def logout():
     flash('Anda telah logout.')
     return redirect(url_for('index'))
 
+@app.route('/debug')
+def debug():
+    users = User.query.all()
+    return f"Users: {users}"
+
+@app.route('/user_detail/<int:user_id>')
+def user_detail(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        flash('User tidak ditemukan.')
+        return redirect(url_for('dashboard_admin'))
+    return render_template('user_detail.html', user=user)
+
 if __name__ == '__main__':
-    with app.app_context():  # Membuat konteks aplikasi
-        db.create_all()      # Membuat tabel di database
+    with app.app_context():
+        db.create_all()  # Membuat tabel di database
     app.run(debug=True)
