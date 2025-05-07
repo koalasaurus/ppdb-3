@@ -13,6 +13,20 @@
         <p><strong>Alamat:</strong> {{ user.address or 'Belum diisi' }}</p>
         <p><strong>Asal Sekolah:</strong> {{ user.school or 'Belum diisi' }}</p>
 
+        <h2>Notifikasi</h2>
+        <ul>
+            {% for notification in user.notifications %}
+            <li>
+                {{ notification.message }}
+                {% if not notification.is_read %}
+                <form method="POST" action="{{ url_for('mark_notification_read', notification_id=notification.id) }}">
+                    <button type="submit">Tandai Dibaca</button>
+                </form>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+
         <h2>Formulir Data Diri</h2>
         <form method="POST">
             <label for="address">Alamat:</label>

@@ -71,6 +71,12 @@ def form(user_id):
     if request.method == 'POST':
         user.address = request.form['address']
         user.school = request.form['school']
+        user.birth_date = request.form['birth_date']
+        user.phone = request.form['phone']
+        user.gender = request.form['gender']
+        user.hobby = request.form['hobby']
+        user.parent_name = request.form['parent_name']
+        user.parent_job = request.form['parent_job']
         db.session.commit()
         flash('Formulir berhasil dikirim! Menunggu persetujuan admin.')
         return redirect(url_for('dashboard_user', user_id=user.id))
@@ -96,7 +102,6 @@ def dashboard_user(user_id):
 @app.route('/dashboard_admin', methods=['GET', 'POST'])
 def dashboard_admin():
     if 'admin_id' not in session:
-        print("Admin not logged in")
         flash('Anda harus login sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('login'))
 
@@ -114,9 +119,11 @@ def dashboard_admin():
         # Proses aksi
         if action == 'approve':
             user.status = 'Approved'
+            add_notification(user.id, "Pendaftaran Anda telah diterima oleh admin.")
             flash(f'User {user.name} telah diterima.')
         elif action == 'reject':
             user.status = 'Rejected'
+            add_notification(user.id, "Pendaftaran Anda telah ditolak oleh admin.")
             flash(f'User {user.name} telah ditolak.')
 
         db.session.commit()  # Simpan perubahan ke database
@@ -161,6 +168,14 @@ def user_detail(user_id):
         flash('User tidak ditemukan.')
         return redirect(url_for('dashboard_admin'))
     return render_template('user_detail.html', user=user)
+
+@app.route('/mark_notification_read/<int:notification_id>', methods=['POST'])
+def mark_notification_read(notification_id):
+    notification = Notification.query.get(notification_id)
+    if notification:
+        notification.is_read = True
+        db.session.commit()
+    return redirect(url_for('dashboard_user', user_id=notification.user_id))
 
 if __name__ == '__main__':
     with app.app_context():
