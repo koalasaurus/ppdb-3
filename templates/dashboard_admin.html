@@ -18,7 +18,7 @@
 
     <div class="container">
         <h1>Dashboard Admin</h1>
-        <table border="1">
+        <table>
             <thead>
                 <tr>
                     <th>Nama</th>
@@ -34,8 +34,8 @@
                 <tr>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.address }}</td>
-                    <td>{{ user.school }}</td>
+                    <td>{{ user.address or 'Belum diisi' }}</td>
+                    <td>{{ user.school or 'Belum diisi' }}</td>
                     <td>{{ user.status }}</td>
                     <td>
                         <form method="POST" style="display: inline;">

@@ -9,8 +9,8 @@
         <h1>Detail User</h1>
         <p><strong>Nama:</strong> {{ user.name }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Alamat:</strong> {{ user.address }}</p>
-        <p><strong>Asal Sekolah:</strong> {{ user.school }}</p>
+        <p><strong>Alamat:</strong> {{ user.address or 'Belum diisi' }}</p>
+        <p><strong>Asal Sekolah:</strong> {{ user.school or 'Belum diisi' }}</p>
         <p><strong>Status Pendaftaran:</strong> {{ user.status }}</p>
         <p><strong>Waktu Pendaftaran:</strong> {{ user.created_at }}</p>
         <a href="{{ url_for('dashboard_admin') }}" class="btn">Kembali ke Dashboard Admin</a>
