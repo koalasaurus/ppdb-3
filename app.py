@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from models import db, User, Admin, Notification  # Import db, User, dan Admin dari models.py
+from models import db, User, Notification, Admin
 from flask_migrate import Migrate
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -19,7 +20,6 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        print(request.form)  # Debug: Periksa data yang diterima dari form
         email = request.form['email']
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
@@ -41,13 +41,26 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+
+        # Debugging
+        print(f"Email input: {email}, Password input: {password}")
+
+        # Periksa apakah user adalah admin
+        admin = Admin.query.filter_by(email=email).first()
+        if admin:
+            print(f"Admin found: {admin.email}, Password DB: {admin.password}")
+        if admin and check_password_hash(admin.password, password):
+            session['admin_id'] = admin.id
+            return redirect(url_for('dashboard_admin'))
+
+        # Periksa apakah user adalah user biasa
         user = User.query.filter_by(email=email).first()
+        if user:
+            print(f"User found: {user.email}, Password DB: {user.password}")
         if not user or user.password != password:
             flash('Email atau password salah.')
             return redirect(url_for('login'))
         session['user_id'] = user.id
-        if user.email == 'admin@example.com':  # Admin login
-            return redirect(url_for('dashboard_admin'))
         return redirect(url_for('dashboard_user', user_id=user.id))
     return render_template('login.html')
 
@@ -56,6 +69,9 @@ def login():
 def form(user_id):
     user = User.query.get(user_id)
     if request.method == 'POST':
+        user.address = request.form['address']
+        user.school = request.form['school']
+        db.session.commit()
         flash('Formulir berhasil dikirim! Menunggu persetujuan admin.')
         return redirect(url_for('dashboard_user', user_id=user.id))
     return render_template('form.html', user=user)
@@ -64,37 +80,18 @@ def form(user_id):
 @app.route('/dashboard_user/<int:user_id>', methods=['GET', 'POST'])
 def dashboard_user(user_id):
     user = User.query.get(user_id)
-    if request.method == 'POST':
-        user.address = request.form['address']
-        user.school = request.form['school']
-        db.session.commit()
-        flash('Formulir berhasil dikirim! Menunggu persetujuan admin.')
     return render_template('dashboard_user.html', user=user)
 
 # Dashboard Admin
 @app.route('/dashboard_admin', methods=['GET', 'POST'])
 def dashboard_admin():
+    if 'admin_id' not in session:
+        print("Admin not logged in")
+        flash('Anda harus login sebagai admin untuk mengakses halaman ini.')
+        return redirect(url_for('login'))
+    print(f"Admin ID in session: {session['admin_id']}")
     users = User.query.all()
-    if request.method == 'POST':
-        user_id = request.form['user_id']
-        action = request.form['action']
-        user = User.query.get(user_id)
-        if action == 'approve':
-            user.status = 'Approved'
-            flash(f'User {user.name} telah diterima.')
-        elif action == 'reject':
-            user.status = 'Rejected'
-            flash(f'User {user.name} telah ditolak.')
-        db.session.commit()
     return render_template('dashboard_admin.html', users=users)
-
-# Tambahkan admin secara manual (hanya untuk pertama kali)
-@app.route('/create_admin')
-def create_admin():
-    admin = Admin(name="Super Admin", email="admin@example.com", password="admin123")
-    db.session.add(admin)
-    db.session.commit()
-    return "Admin berhasil dibuat!"
 
 # Tambahkan notifikasi untuk user
 def add_notification(user_id, message):
@@ -111,13 +108,20 @@ def send_notification(user_id):
 # Logout
 @app.route('/logout')
 def logout():
+    session.pop('user_id', None)
+    session.pop('admin_id', None)  # Hapus session admin
     flash('Anda telah logout.')
     return redirect(url_for('index'))
 
-@app.route('/debug')
-def debug():
+@app.route('/debug_users')
+def debug_users():
     users = User.query.all()
-    return f"Users: {users}"
+    return {user.email: {"is_admin": False, "password": user.password} for user in users}
+
+@app.route('/debug_admins')
+def debug_admins():
+    admins = Admin.query.all()
+    return {admin.email: {"name": admin.name, "password": admin.password} for admin in admins}
 
 @app.route('/user_detail/<int:user_id>')
 def user_detail(user_id):
@@ -129,5 +133,20 @@ def user_detail(user_id):
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Membuat tabel di database
+        # Membuat tabel di database
+        db.create_all()
+
+        # Tambahkan admin secara manual
+        admin = Admin.query.filter_by(email="admin@gmail.com").first()
+        if not admin:
+            admin = Admin(
+                name="Admin",
+                email="admin@gmail.com",
+                password=generate_password_hash("admin123")  # Hash password
+            )
+            db.session.add(admin)
+            db.session.commit()
+            print("Admin berhasil dibuat!")
+
+    # Jalankan aplikasi Flask
     app.run(debug=True)
