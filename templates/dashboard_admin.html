@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand">PPDB</a>
+            <div class="navbar-links">
+                <a href="/dashboard_admin">Dashboard Admin</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Dashboard Admin</h1>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.status }}</td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                            <button type="submit" name="action" value="approve">Terima</button>
+                            <button type="submit" name="action" value="reject">Tolak</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
