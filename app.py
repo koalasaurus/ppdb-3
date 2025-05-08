@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from models import db, User, Notification, Admin
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -69,33 +68,18 @@ def login():
 @app.route('/form/<int:user_id>', methods=['GET', 'POST'])
 def form(user_id):
     user = User.query.get(user_id)
-    if not user:
-        flash('User tidak ditemukan.')
-        return redirect(url_for('dashboard_user', user_id=user_id))
-    
     if request.method == 'POST':
-        try:
-            # Ambil data dari formulir
-            user.address = request.form['address']
-            user.school = request.form['school']
-            user.phone = request.form['phone']
-            user.gender = request.form['gender']
-            user.hobby = request.form['hobby']
-            user.parent_name = request.form['parent_name']
-            user.parent_job = request.form['parent_job']
-            
-            # Konversi tanggal lahir dari string ke datetime.date
-            birth_date_str = request.form['birth_date']
-            user.birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
-            
-            # Simpan perubahan ke database
-            db.session.commit()
-            flash('Formulir berhasil dikirim! Menunggu persetujuan admin.')
-            return redirect(url_for('dashboard_user', user_id=user.id))
-        except ValueError:
-            flash('Format tanggal tidak valid. Gunakan format YYYY-MM-DD.')
-            return redirect(url_for('form', user_id=user.id))
-    
+        user.address = request.form['address']
+        user.school = request.form['school']
+        user.birth_date = request.form['birth_date']
+        user.phone = request.form['phone']
+        user.gender = request.form['gender']
+        user.hobby = request.form['hobby']
+        user.parent_name = request.form['parent_name']
+        user.parent_job = request.form['parent_job']
+        db.session.commit()
+        flash('Formulir berhasil dikirim! Menunggu persetujuan admin.')
+        return redirect(url_for('dashboard_user', user_id=user.id))
     return render_template('form.html', user=user)
 
 # Dashboard User
