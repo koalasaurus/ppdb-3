@@ -165,3 +165,94 @@ section h1, section h2 {
         padding: 10px 20px;
     }
 }
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #2bb3b1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    gap: 40px;
+    }
+    
+    .form-container {
+    background-color: #fff;
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    }
+    
+    .header {
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    }
+    
+    .register .header {
+    background-color: #6a1b9a;
+    }
+    
+    .login .header {
+    background-color: #fbc02d;
+    color: #fff;
+    }
+    
+    .form-content {
+    padding: 20px;
+    }
+    
+    .input-group {
+    margin-bottom: 15px;
+    }
+    
+    .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    }
+    
+    .checkbox-group {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    }
+    
+    .checkbox-group input {
+    margin-right: 8px;
+    }
+    
+    .btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    }
+    
+    .register .btn {
+    background-color: #6a1b9a;
+    }
+    
+    .login .btn {
+    background-color: #fbc02d;
+    color: #000;
+    }
+    
+    .social-login {
+    text-align: center;
+    margin-top: 15px;
+    }
+    
+    .social-login img {
+    width: 30px;
+    margin: 0 5px;
+    cursor: pointer;
+    }
