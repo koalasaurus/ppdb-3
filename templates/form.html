@@ -20,8 +20,8 @@
             <label>Asal Sekolah:</label>
             <input type="text" name="school" value="{{ user.school or '' }}" required><br>
 
-            <label>Tanggal Lahir:</label>
-            <input type="date" name="birth_date" required><br>
+            <label for="birth_date">Tanggal Lahir:</label>
+            <input type="date" id="birth_date" name="birth_date" required><br>
 
             <label>Nomor Telepon:</label>
             <input type="tel" name="phone" pattern="[0-9]{10,15}" placeholder="Contoh: 081234567890" required><br>
