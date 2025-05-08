@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Detail User</title>
+    <title>{% block title %}Detail User{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+    {% block content %}
     <div class="container">
         <h1>Detail User</h1>
         <p><strong>Nama:</strong> {{ user.name }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
         <p><strong>Alamat:</strong> {{ user.address or 'Belum diisi' }}</p>
         <p><strong>Asal Sekolah:</strong> {{ user.school or 'Belum diisi' }}</p>
+        <p><strong>Tanggal Lahir:</strong> {{ user.birth_date or 'Belum diisi' }}</p>
+        <p><strong>Nomor Telepon:</strong> {{ user.phone or 'Belum diisi' }}</p>
+        <p><strong>Jenis Kelamin:</strong> {{ user.gender or 'Belum diisi' }}</p>
+        <p><strong>Hobi:</strong> {{ user.hobby or 'Belum diisi' }}</p>
+        <p><strong>Nama Orang Tua/Wali:</strong> {{ user.parent_name or 'Belum diisi' }}</p>
+        <p><strong>Pekerjaan Orang Tua/Wali:</strong> {{ user.parent_job or 'Belum diisi' }}</p>
         <p><strong>Status Pendaftaran:</strong> {{ user.status }}</p>
         <p><strong>Waktu Pendaftaran:</strong> {{ user.created_at }}</p>
         <a href="{{ url_for('dashboard_admin') }}" class="btn">Kembali ke Dashboard Admin</a>
     </div>
+    {% endblock %}
 </body>
 </html>

@@ -1,40 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard User</title>
+    <title>{% block title %}Dashboard User{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Dashboard User</h1>
-        <p><strong>Nama:</strong> {{ user.name }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Status Pendaftaran:</strong> {{ user.status }}</p>
-        <p><strong>Alamat:</strong> {{ user.address or 'Belum diisi' }}</p>
-        <p><strong>Asal Sekolah:</strong> {{ user.school or 'Belum diisi' }}</p>
-
-        <h2>Notifikasi</h2>
+    <div class="sidebar">
+        <h2>Menu</h2>
         <ul>
-            {% for notification in user.notifications %}
-            <li>
-                {{ notification.message }}
-                {% if not notification.is_read %}
-                <form method="POST" action="{{ url_for('mark_notification_read', notification_id=notification.id) }}">
-                    <button type="submit">Tandai Dibaca</button>
-                </form>
-                {% endif %}
-            </li>
-            {% endfor %}
+            <li><a href="{{ url_for('index') }}">Homepage</a></li>
+            <li><a href="#user-info">Informasi User</a></li>
+            <li><a href="#form-section">Formulir Data Diri</a></li>
         </ul>
+    </div>
 
-        <h2>Formulir Data Diri</h2>
-        <form method="POST">
-            <label for="address">Alamat:</label>
-            <input type="text" id="address" name="address" value="{{ user.address or '' }}" required><br>
-            <label for="school">Asal Sekolah:</label>
-            <input type="text" id="school" name="school" value="{{ user.school or '' }}" required><br>
-            <button type="submit">Simpan</button>
-        </form>
+    <div class="content">
+        {% block content %}
+        <!-- Section Informasi User -->
+        <section id="user-info">
+            <h1>Informasi User</h1>
+            <p><strong>Nama:</strong> {{ user.name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Status Pendaftaran:</strong> {{ user.status }}</p>
+            <p><strong>Alamat:</strong> {{ user.address or 'Belum diisi' }}</p>
+            <p><strong>Asal Sekolah:</strong> {{ user.school or 'Belum diisi' }}</p>
+            <p><strong>Tanggal Lahir:</strong> {{ user.birth_date or 'Belum diisi' }}</p>
+            <p><strong>Nomor Telepon:</strong> {{ user.phone or 'Belum diisi' }}</p>
+            <p><strong>Jenis Kelamin:</strong> {{ user.gender or 'Belum diisi' }}</p>
+            <p><strong>Hobi:</strong> {{ user.hobby or 'Belum diisi' }}</p>
+            <p><strong>Nama Orang Tua/Wali:</strong> {{ user.parent_name or 'Belum diisi' }}</p>
+            <p><strong>Pekerjaan Orang Tua/Wali:</strong> {{ user.parent_job or 'Belum diisi' }}</p>
+        </section>
+
+        <!-- Section Formulir -->
+        <section id="form-section">
+            <h2>Formulir Data Diri</h2>
+            <form method="POST">
+                <label for="address">Alamat:</label>
+                <input type="text" id="address" name="address" value="{{ user.address or '' }}" required><br>
+
+                <label for="school">Asal Sekolah:</label>
+                <input type="text" id="school" name="school" value="{{ user.school or '' }}" required><br>
+
+                <label for="birth_date">Tanggal Lahir:</label>
+                <input type="date" id="birth_date" name="birth_date" value="{{ user.birth_date or '' }}"><br>
+
+                <label for="phone">Nomor Telepon:</label>
+                <input type="tel" id="phone" name="phone" value="{{ user.phone or '' }}" placeholder="Contoh: 081234567890"><br>
+
+                <label for="gender">Jenis Kelamin:</label>
+                <select id="gender" name="gender" required>
+                    <option value="" disabled {% if not user.gender %}selected{% endif %}>Pilih Jenis Kelamin</option>
+                    <option value="Laki-laki" {% if user.gender == 'Laki-laki' %}selected{% endif %}>Laki-laki</option>
+                    <option value="Perempuan" {% if user.gender == 'Perempuan' %}selected{% endif %}>Perempuan</option>
+                </select><br>
+
+                <label for="hobby">Hobi:</label>
+                <input type="text" id="hobby" name="hobby" value="{{ user.hobby or '' }}" placeholder="Contoh: Membaca, Olahraga"><br>
+
+                <label for="parent_name">Nama Orang Tua/Wali:</label>
+                <input type="text" id="parent_name" name="parent_name" value="{{ user.parent_name or '' }}"><br>
+
+                <label for="parent_job">Pekerjaan Orang Tua/Wali:</label>
+                <input type="text" id="parent_job" name="parent_job" value="{{ user.parent_job or '' }}"><br>
+
+                <button type="submit">Simpan</button>
+            </form>
+        </section>
+        {% endblock %}
     </div>
 </body>
 </html>

@@ -1,116 +1,167 @@
+/* Reset */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
     color: #333;
 }
 
+/* Container utama */
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 50px auto;
-    padding: 20px;
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
 }
 
-h1 {
-    text-align: center;
-    color: #4CAF50;
-}
-
-.info-box {
-    background: #f9f9f9;
-    padding: 15px;
-    border-left: 5px solid #4CAF50;
+/* Header */
+.container h1 {
+    font-size: 28px;
+    color: #333;
     margin-bottom: 20px;
-    border-radius: 5px;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 10px;
 }
 
-.info-box h2 {
-    margin-top: 0;
-    color: #4CAF50;
-}
-
-.info-box ol {
-    padding-left: 20px;
-}
-
-.action-buttons {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.action-buttons .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 5px;
-    background: #4CAF50;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s ease;
-}
-
-.action-buttons .btn:hover {
-    background: #45a049;
-}
-
-.btn-detail {
-    display: inline-block;
-    padding: 5px 10px;
-    background: #007BFF;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s ease;
-}
-
-.btn-detail:hover {
-    background: #0056b3;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-table, th, td {
-    border: 1px solid black;
-}
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-
-.navbar {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar .navbar-brand {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-}
-
-.navbar .navbar-links a {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
+/* Informasi User */
+.container p {
     font-size: 16px;
-    transition: color 0.3s ease;
+    margin: 10px 0;
+    line-height: 1.8;
 }
 
-.navbar .navbar-links a:hover {
-    color: #d4f5d4;
+.container p strong {
+    color: #007bff;
+}
+
+/* Tombol */
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-blue {
+    background-color: #007bff;
+}
+
+.btn-blue:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.btn-green {
+    background-color: #28a745;
+}
+
+.btn-green:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.btn-red {
+    background-color: #dc3545;
+}
+
+.btn-red:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #007bff;
+    transform: scale(1.05);
+}
+
+/* Content */
+.content {
+    margin-left: 270px;
+    padding: 30px;
+}
+
+/* Section */
+section {
+    margin-bottom: 30px;
+}
+
+section h1, section h2 {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .container h1 {
+        font-size: 22px;
+    }
+
+    .container p {
+        font-size: 14px;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
 }

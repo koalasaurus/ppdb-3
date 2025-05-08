@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}PPDB{% endblock %}</title>
+    <title>{% block title %}Aplikasi{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="/" class="navbar-brand">PPDB</a>
-            <div class="navbar-links">
-                <a href="/dashboard_user/{{ session.get('user_id') }}">Dashboard</a>
-                <a href="/logout">Logout</a>
-            </div>
-        </div>
-    </nav>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Homepage</a></li>
+        </ul>
+    </div>
 
-    <!-- Content -->
-    <div class="container">
-        {% block content %}{% endblock %}
+    <div class="content">
+        {% block content %}
+        <!-- Konten halaman akan dimasukkan di sini -->
+        {% endblock %}
     </div>
 </body>
 </html>

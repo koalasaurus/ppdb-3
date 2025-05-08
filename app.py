@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from models import db, User, Notification, Admin
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -87,13 +88,22 @@ def form(user_id):
 def dashboard_user(user_id):
     user = User.query.get(user_id)
     if request.method == 'POST':
-        # Debugging
-        print(f"Alamat: {request.form['address']}, Asal Sekolah: {request.form['school']}")
-
-        # Simpan data ke database
-        user.address = request.form['address']
-        user.school = request.form['school']
-        db.session.commit()
+        # Simpan data dari formulir ke database
+        user.address = request.form.get('address')
+        user.school = request.form.get('school')
+        
+        # Konversi string tanggal lahir menjadi objek datetime.date
+        birth_date_str = request.form.get('birth_date')
+        if birth_date_str:  # Pastikan input tidak kosong
+            user.birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
+        
+        user.phone = request.form.get('phone')
+        user.gender = request.form.get('gender')
+        user.hobby = request.form.get('hobby')
+        user.parent_name = request.form.get('parent_name')
+        user.parent_job = request.form.get('parent_job')
+        
+        db.session.commit()  # Simpan perubahan ke database
         flash('Data berhasil diperbarui.')
         return redirect(url_for('dashboard_user', user_id=user.id))
     return render_template('dashboard_user.html', user=user)
@@ -105,30 +115,9 @@ def dashboard_admin():
         flash('Anda harus login sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('login'))
 
+    # Ambil semua data user dari database
     users = User.query.all()
-
-    if request.method == 'POST':
-        user_id = request.form.get('user_id')  # Ambil ID user dari form
-        action = request.form.get('action')  # Ambil aksi (approve/reject) dari form
-        user = User.query.get(user_id)
-
-        if not user:
-            flash('User tidak ditemukan.')
-            return redirect(url_for('dashboard_admin'))
-
-        # Proses aksi
-        if action == 'approve':
-            user.status = 'Approved'
-            add_notification(user.id, "Pendaftaran Anda telah diterima oleh admin.")
-            flash(f'User {user.name} telah diterima.')
-        elif action == 'reject':
-            user.status = 'Rejected'
-            add_notification(user.id, "Pendaftaran Anda telah ditolak oleh admin.")
-            flash(f'User {user.name} telah ditolak.')
-
-        db.session.commit()  # Simpan perubahan ke database
-        return redirect(url_for('dashboard_admin'))
-
+    print(f"Data user di admin: {[user.name for user in users]}")
     return render_template('dashboard_admin.html', users=users)
 
 # Tambahkan notifikasi untuk user
