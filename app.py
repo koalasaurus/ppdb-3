@@ -68,9 +68,6 @@ def login():
 @app.route('/form/<int:user_id>', methods=['GET', 'POST'])
 def form(user_id):
     user = User.query.get(user_id)
-    if user.address and user.school:
-        flash('Anda sudah mengisi formulir.')
-        return redirect(url_for('dashboard_user', user_id=user.id))
     if request.method == 'POST':
         user.address = request.form['address']
         user.school = request.form['school']
@@ -107,14 +104,19 @@ def dashboard_admin():
     if 'admin_id' not in session:
         flash('Anda harus login sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('login'))
+
     users = User.query.all()
+
     if request.method == 'POST':
-        user_id = request.form.get('user_id')
-        action = request.form.get('action')
+        user_id = request.form.get('user_id')  # Ambil ID user dari form
+        action = request.form.get('action')  # Ambil aksi (approve/reject) dari form
         user = User.query.get(user_id)
+
         if not user:
             flash('User tidak ditemukan.')
             return redirect(url_for('dashboard_admin'))
+
+        # Proses aksi
         if action == 'approve':
             user.status = 'Approved'
             add_notification(user.id, "Pendaftaran Anda telah diterima oleh admin.")
@@ -123,8 +125,10 @@ def dashboard_admin():
             user.status = 'Rejected'
             add_notification(user.id, "Pendaftaran Anda telah ditolak oleh admin.")
             flash(f'User {user.name} telah ditolak.')
-        db.session.commit()
+
+        db.session.commit()  # Simpan perubahan ke database
         return redirect(url_for('dashboard_admin'))
+
     return render_template('dashboard_admin.html', users=users)
 
 # Tambahkan notifikasi untuk user
