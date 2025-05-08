@@ -1,0 +1,69 @@
+/* Background for Register page */
+body.register {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: url('/static/images/bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Form container style */
+.form-container {
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    width: 350px;
+    color: #fff;
+    text-align: center;
+}
+
+/* Header style */
+.header {
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    position: relative;
+    color: #fff;
+}
+
+/* Input group styles */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #444;
+    background: transparent;
+    color: #fff;
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+.input-group input:focus {
+    border-bottom: 1px solid #00bfff;
+    outline: none;
+}
+
+/* Button style */
+.btn {
+    background-color: #00bfff;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0095cc;
+}

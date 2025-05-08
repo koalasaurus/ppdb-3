@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}Detail User{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>user detail</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/detail.css') }}">
 </head>
 <body>
-    {% extends "base.html" %}
-
-    {% block content %}
+ 
     <div class="container">
         <h1>Detail User</h1>
         <p><strong>Nama:</strong> {{ user.name }}</p>
@@ -24,6 +22,6 @@
         <p><strong>Waktu Pendaftaran:</strong> {{ user.created_at }}</p>
         <a href="{{ url_for('dashboard_admin') }}" class="btn btn-blue">Kembali ke Dashboard Admin</a>
     </div>
-    {% endblock %}
+  
 </body>
 </html>

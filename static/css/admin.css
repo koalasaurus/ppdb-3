@@ -1,0 +1,118 @@
+/* Reset & base style */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #1f1f1f;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.navbar a {
+    color: #90caf9;
+    text-decoration: none;
+    margin-right: 15px;
+    font-weight: 500;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* Container */
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Heading */
+.container h1 {
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #90caf9;
+}
+
+/* Table style */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: #e0e0e0;
+}
+
+thead {
+    background-color: #2c2c2c;
+    color: #90caf9;
+}
+
+thead th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+tbody tr {
+    border-bottom: 1px solid #333;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #1a1a1a;
+}
+
+tbody td {
+    padding: 12px;
+}
+
+/* Action buttons */
+button[type="submit"] {
+    padding: 8px 12px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+button[name="action"][value="approve"] {
+    background-color: #43a047;
+}
+
+button[name="action"][value="approve"]:hover {
+    background-color: #388e3c;
+}
+
+button[name="action"][value="reject"] {
+    background-color: #e53935;
+}
+
+button[name="action"][value="reject"]:hover {
+    background-color: #c62828;
+}
+
+.btn-detail {
+    background-color: #1e88e5;
+    padding: 8px 10px;
+    border-radius: 4px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-detail:hover {
+    background-color: #1565c0;
+}

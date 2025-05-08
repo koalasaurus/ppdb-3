@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from models import db, User, Notification, Admin
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -26,10 +25,16 @@ def register():
         if existing_user:
             flash('Email sudah terdaftar. Gunakan email lain.')
             return redirect(url_for('register'))
-        # Lanjutkan proses registrasi
-        name = request.form['name']
+        # Validasi password dan konfirmasi password
         password = request.form['password']
-        user = User(name=name, email=email, password=password)
+        confirm_password = request.form['confirm_password']
+        if password != confirm_password:
+            flash('Password dan konfirmasi password tidak cocok.')
+            return redirect(url_for('register'))
+        # Hash password sebelum menyimpannya
+        hashed_password = generate_password_hash(password)
+        name = request.form['name']
+        user = User(name=name, email=email, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         flash('Registrasi berhasil! Silakan login.')
@@ -43,32 +48,29 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        # Debugging
-        print(f"Email input: {email}, Password input: {password}")
-
         # Periksa apakah user adalah admin
         admin = Admin.query.filter_by(email=email).first()
-        if admin:
-            print(f"Admin found: {admin.email}, Password DB: {admin.password}")
         if admin and check_password_hash(admin.password, password):
             session['admin_id'] = admin.id
             return redirect(url_for('dashboard_admin'))
 
         # Periksa apakah user adalah user biasa
         user = User.query.filter_by(email=email).first()
-        if user:
-            print(f"User found: {user.email}, Password DB: {user.password}")
-        if not user or user.password != password:
-            flash('Email atau password salah.')
-            return redirect(url_for('login'))
-        session['user_id'] = user.id
-        return redirect(url_for('dashboard_user', user_id=user.id))
+        if user and check_password_hash(user.password, password):
+            session['user_id'] = user.id
+            return redirect(url_for('dashboard_user', user_id=user.id))
+
+        flash('Email atau password salah.')
+        return redirect(url_for('login'))
     return render_template('login.html')
 
 # Formulir Pendaftaran
 @app.route('/form/<int:user_id>', methods=['GET', 'POST'])
 def form(user_id):
     user = User.query.get(user_id)
+    if user.address and user.school:
+        flash('Anda sudah mengisi formulir.')
+        return redirect(url_for('dashboard_user', user_id=user.id))
     if request.method == 'POST':
         user.address = request.form['address']
         user.school = request.form['school']
@@ -88,22 +90,13 @@ def form(user_id):
 def dashboard_user(user_id):
     user = User.query.get(user_id)
     if request.method == 'POST':
-        # Simpan data dari formulir ke database
-        user.address = request.form.get('address')
-        user.school = request.form.get('school')
-        
-        # Konversi string tanggal lahir menjadi objek datetime.date
-        birth_date_str = request.form.get('birth_date')
-        if birth_date_str:  # Pastikan input tidak kosong
-            user.birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
-        
-        user.phone = request.form.get('phone')
-        user.gender = request.form.get('gender')
-        user.hobby = request.form.get('hobby')
-        user.parent_name = request.form.get('parent_name')
-        user.parent_job = request.form.get('parent_job')
-        
-        db.session.commit()  # Simpan perubahan ke database
+        # Debugging
+        print(f"Alamat: {request.form['address']}, Asal Sekolah: {request.form['school']}")
+
+        # Simpan data ke database
+        user.address = request.form['address']
+        user.school = request.form['school']
+        db.session.commit()
         flash('Data berhasil diperbarui.')
         return redirect(url_for('dashboard_user', user_id=user.id))
     return render_template('dashboard_user.html', user=user)
@@ -114,10 +107,24 @@ def dashboard_admin():
     if 'admin_id' not in session:
         flash('Anda harus login sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('login'))
-
-    # Ambil semua data user dari database
     users = User.query.all()
-    print(f"Data user di admin: {[user.name for user in users]}")
+    if request.method == 'POST':
+        user_id = request.form.get('user_id')
+        action = request.form.get('action')
+        user = User.query.get(user_id)
+        if not user:
+            flash('User tidak ditemukan.')
+            return redirect(url_for('dashboard_admin'))
+        if action == 'approve':
+            user.status = 'Approved'
+            add_notification(user.id, "Pendaftaran Anda telah diterima oleh admin.")
+            flash(f'User {user.name} telah diterima.')
+        elif action == 'reject':
+            user.status = 'Rejected'
+            add_notification(user.id, "Pendaftaran Anda telah ditolak oleh admin.")
+            flash(f'User {user.name} telah ditolak.')
+        db.session.commit()
+        return redirect(url_for('dashboard_admin'))
     return render_template('dashboard_admin.html', users=users)
 
 # Tambahkan notifikasi untuk user
