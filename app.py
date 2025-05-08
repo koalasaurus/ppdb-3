@@ -86,17 +86,13 @@ def form(user_id):
 @app.route('/dashboard_user/<int:user_id>', methods=['GET', 'POST'])
 def dashboard_user(user_id):
     user = User.query.get(user_id)
-    if request.method == 'POST':
-        # Debugging
-        print(f"Alamat: {request.form['address']}, Asal Sekolah: {request.form['school']}")
-
-        # Simpan data ke database
-        user.address = request.form['address']
-        user.school = request.form['school']
-        db.session.commit()
-        flash('Data berhasil diperbarui.')
-        return redirect(url_for('dashboard_user', user_id=user.id))
-    return render_template('dashboard_user.html', user=user)
+    if not user:
+        flash('User tidak ditemukan.')
+        return redirect(url_for('index'))
+    
+    # Ambil notifikasi terbaru untuk user
+    notification = Notification.query.filter_by(user_id=user_id).order_by(Notification.id.desc()).first()
+    return render_template('dashboard_user.html', user=user, notification=notification)
 
 # Dashboard Admin
 @app.route('/dashboard_admin', methods=['GET', 'POST'])
@@ -133,8 +129,16 @@ def dashboard_admin():
 
 # Tambahkan notifikasi untuk user
 def add_notification(user_id, message):
-    notification = Notification(user_id=user_id, message=message)
-    db.session.add(notification)
+    # Periksa apakah sudah ada notifikasi untuk user
+    existing_notification = Notification.query.filter_by(user_id=user_id).first()
+    if existing_notification:
+        # Perbarui pesan notifikasi jika sudah ada
+        existing_notification.message = message
+        existing_notification.is_read = False  # Tandai sebagai belum dibaca
+    else:
+        # Tambahkan notifikasi baru jika belum ada
+        notification = Notification(user_id=user_id, message=message)
+        db.session.add(notification)
     db.session.commit()
 
 # Contoh penggunaan di route
