@@ -1,26 +1,26 @@
-/* Global Reset & Dark Base */
+/* Global Reset & Light Base */
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background-color: #121212; /* full dark background */
-    color: #e0e0e0; /* brighter text for readability */
+    background-color: #f9f9f9; /* Putih terang */
+    color: #333; /* Warna teks utama */
 }
 
 /* Container Styling */
 .container {
     max-width: 800px;
     margin: 50px auto;
-    background: #1e1e2f; /* dark panel */
+    background: #ffffff; /* Putih */
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(98, 0, 234, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Headings */
 .container h1,
 .container h2 {
-    color: #bb86fc; /* purple accent */
-    border-bottom: 1px solid #333;
+    color: #0077b6; /* Biru */
+    border-bottom: 1px solid #ddd;
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
@@ -28,13 +28,13 @@ body {
 /* Paragraphs & Labels */
 .container p,
 label {
-    color: #e0e0e0;
+    color: #555; /* Abu-abu gelap */
     font-size: 16px;
     margin: 10px 0;
 }
 
 .container strong {
-    color: #8ab4f8;
+    color: #0077b6; /* Biru */
 }
 
 /* List */
@@ -44,12 +44,12 @@ ul {
 }
 
 li {
-    background: #2c2c3e;
-    color: #f1f1f1;
+    background: #f1f1f1; /* Abu-abu terang */
+    color: #333;
     margin-bottom: 10px;
     padding: 12px;
     border-radius: 6px;
-    box-shadow: 0 0 5px rgba(98, 0, 234, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Form Inputs */
@@ -58,10 +58,16 @@ input[type="text"] {
     padding: 10px;
     margin-top: 6px;
     margin-bottom: 15px;
-    border: none;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    background-color: #333;
-    color: #f9f9f9;
+    background-color: #ffffff;
+    color: #333;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #0077b6; /* Biru */
+    background-color: #f9f9f9;
 }
 
 /* Buttons */
@@ -76,19 +82,19 @@ button[type="submit"] {
 }
 
 form button {
-    background-color: #1e88e5;
+    background-color: #52b788; /* Hijau */
 }
 
 form button:hover {
-    background-color: #1565c0;
+    background-color: #409e6f; /* Hijau lebih gelap */
 }
 
 button[type="submit"] {
-    background-color: #00c853;
+    background-color: #0077b6; /* Biru */
 }
 
 button[type="submit"]:hover {
-    background-color: #00b342;
+    background-color: #005f8e; /* Biru lebih gelap */
 }
 
 /* Link Button */
@@ -104,10 +110,10 @@ button[type="submit"]:hover {
 }
 
 .btn-blue {
-    background-color: #6200ea;
+    background-color: #0077b6; /* Biru */
     color: white;
 }
 
 .btn-blue:hover {
-    background-color: #3700b3;
+    background-color: #005f8e; /* Biru lebih gelap */
 }

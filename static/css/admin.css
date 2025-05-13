@@ -2,23 +2,23 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
+    background-color: #f9f9f9; /* Putih terang */
+    color: #333; /* Warna teks utama */
 }
 
 /* Navbar */
 .navbar {
-    background-color: #1f1f1f;
+    background-color: #0077b6; /* Biru */
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar a {
-    color: #90caf9;
+    color: #ffffff;
     text-decoration: none;
     margin-right: 15px;
     font-weight: 500;
@@ -32,17 +32,17 @@ body {
 .container {
     max-width: 1100px;
     margin: 30px auto;
-    background: #1e1e1e;
+    background: #ffffff; /* Putih */
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Heading */
 .container h1 {
     margin-bottom: 25px;
     font-size: 26px;
-    color: #90caf9;
+    color: #0077b6; /* Biru */
 }
 
 /* Table style */
@@ -50,12 +50,12 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    color: #e0e0e0;
+    color: #333;
 }
 
 thead {
-    background-color: #2c2c2c;
-    color: #90caf9;
+    background-color: #f1f1f1; /* Abu-abu terang */
+    color: #0077b6; /* Biru */
 }
 
 thead th {
@@ -65,11 +65,11 @@ thead th {
 }
 
 tbody tr {
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #ddd;
 }
 
 tbody tr:nth-child(even) {
-    background-color: #1a1a1a;
+    background-color: #f9f9f9;
 }
 
 tbody td {
@@ -89,23 +89,23 @@ button[type="submit"] {
 }
 
 button[name="action"][value="approve"] {
-    background-color: #43a047;
+    background-color: #52b788; /* Hijau */
 }
 
 button[name="action"][value="approve"]:hover {
-    background-color: #388e3c;
+    background-color: #409e6f;
 }
 
 button[name="action"][value="reject"] {
-    background-color: #e53935;
+    background-color: #e63946; /* Merah */
 }
 
 button[name="action"][value="reject"]:hover {
-    background-color: #c62828;
+    background-color: #d62828;
 }
 
 .btn-detail {
-    background-color: #1e88e5;
+    background-color: #0077b6; /* Biru */
     padding: 8px 10px;
     border-radius: 4px;
     color: white;
@@ -114,5 +114,5 @@ button[name="action"][value="reject"]:hover {
 }
 
 .btn-detail:hover {
-    background-color: #1565c0;
+    background-color: #005f8e;
 }

@@ -7,15 +7,19 @@
 
 body {
     font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: #f9f9f9; /* Putih terang */
+    color: #333; /* Warna teks utama */
 }
 
 /* Navbar */
 .navbar {
-    background-color: #1a1a2e;
+    background-color: #0077b6; /* Biru */
     padding: 15px 30px;
     color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-container {
@@ -31,6 +35,12 @@ body {
 
 .navbar-buttons a {
     margin-left: 15px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    transition: background-color 0.3s ease;
 }
 
 /* Tombol */
@@ -70,8 +80,8 @@ body {
 /* Sidebar */
 .sidebar {
     width: 250px;
-    background-color: #16213e;
-    color: #fff;
+    background-color: #f1f1f1; /* Abu-abu terang */
+    color: #333;
     padding: 20px;
     flex-shrink: 0;
 }
@@ -81,18 +91,27 @@ body {
 }
 
 .sidebar a {
-    color: #fff;
+    color: #0077b6;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
 }
 
 /* Main Content */
 .main-content {
     flex: 1;
-    background-color: #ffffff;
+    background-color: #ffffff; /* Putih */
     padding: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .main-content h1 {
-    color: #1a1a2e;
+    color: #0077b6;
 }
 
 .main-content p {
@@ -102,13 +121,13 @@ body {
 
 /* Info Box */
 .info-box {
-    background-color: #eaeaea;
+    background-color: #f1f1f1; /* Abu-abu terang */
     padding: 20px;
     border-radius: 8px;
 }
 
 .info-box h2 {
-    color: #1a1a2e;
+    color: #0077b6;
 }
 
 .info-box ol {
