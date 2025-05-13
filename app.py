@@ -119,7 +119,10 @@ def dashboard_user(user_id):
     ])
     progress = int((filled_fields / total_fields) * 100)
 
-    return render_template('dashboard_user.html', user=user, progress=progress)
+    # Ambil notifikasi terbaru untuk user
+    notification = Notification.query.filter_by(user_id=user.id).order_by(Notification.id.desc()).first()
+
+    return render_template('dashboard_user.html', user=user, progress=progress, notification=notification)
 
 # Dashboard Admin
 @app.route('/dashboard_admin', methods=['GET', 'POST'])

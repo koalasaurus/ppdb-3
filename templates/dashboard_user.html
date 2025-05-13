@@ -4,6 +4,48 @@
     <title>Dashboard User</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/user.css') }}">
     <style>
+        .notification {
+            padding: 15px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 600px;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification.success {
+            background-color: rgba(82, 183, 136, 0.9); /* Hijau transparan */
+            color: white;
+        }
+
+        .notification.error {
+            background-color: rgba(230, 57, 70, 0.9); /* Merah transparan */
+            color: white;
+        }
+
+        .notification .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+
+        .notification .close-btn:hover {
+            color: #ddd;
+        }
+
         .progress-container {
             margin: 20px 0;
             background-color: #f1f1f1; /* Abu-abu terang */
@@ -56,15 +98,30 @@
             color: #e63946; /* Merah */
         }
     </style>
+    <script>
+        // Fungsi untuk menyembunyikan notifikasi
+        function closeNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'none';
+        }
+    </script>
 </head>
 <body>
+    <!-- Notifikasi -->
+    {% if notification %}
+    <div id="notification" class="notification {{ 'success' if 'diterima' in notification.message.lower() else 'error' }}">
+        <button class="close-btn" onclick="closeNotification()">×</button>
+        {{ notification.message }}
+    </div>
+    {% endif %}
+
     <div class="container">
         <h1>Dashboard User</h1>
         <p>Selamat datang, <strong>{{ user.name }}</strong>! Berikut adalah informasi seputar PPDB dan progres pendaftaran Anda.</p>
 
         <h2>Progres Pendaftaran</h2>
         <div class="progress-container">
-            <div class="progress-bar"></div>
+            <div class="progress-bar" style="width: {{ progress }}%;"></div>
         </div>
         <div class="progress-label">
             Progres Pendaftaran: {{ progress }}%
