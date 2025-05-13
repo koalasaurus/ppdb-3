@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from models import db, User, Notification, Admin
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -68,18 +69,30 @@ def login():
 @app.route('/form/<int:user_id>', methods=['GET', 'POST'])
 def form(user_id):
     user = User.query.get(user_id)
+    if not user:
+        flash('User tidak ditemukan.')
+        return redirect(url_for('dashboard_user', user_id=user_id))
+
     if request.method == 'POST':
+        user.name = request.form['name']
         user.address = request.form['address']
         user.school = request.form['school']
-        user.birth_date = request.form['birth_date']
+        
+        # Konversi birth_date dari string ke datetime.date
+        birth_date_str = request.form['birth_date']
+        if birth_date_str:
+            try:
+                user.birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
+            except ValueError:
+                flash('Format tanggal lahir tidak valid.')
+                return redirect(url_for('form', user_id=user.id))
+        
         user.phone = request.form['phone']
         user.gender = request.form['gender']
-        user.hobby = request.form['hobby']
-        user.parent_name = request.form['parent_name']
-        user.parent_job = request.form['parent_job']
         db.session.commit()
-        flash('Formulir berhasil dikirim! Menunggu persetujuan admin.')
+        flash('Formulir berhasil disimpan.')
         return redirect(url_for('dashboard_user', user_id=user.id))
+
     return render_template('form.html', user=user)
 
 # Dashboard User
@@ -89,10 +102,18 @@ def dashboard_user(user_id):
     if not user:
         flash('User tidak ditemukan.')
         return redirect(url_for('index'))
-    
-    # Ambil notifikasi terbaru untuk user
-    notification = Notification.query.filter_by(user_id=user_id).order_by(Notification.id.desc()).first()
-    return render_template('dashboard_user.html', user=user, notification=notification)
+
+    # Hitung progres pendaftaran
+    total_fields = 4
+    filled_fields = sum([
+        bool(user.name),
+        bool(user.email),
+        bool(user.address),
+        bool(user.school)
+    ])
+    progress = int((filled_fields / total_fields) * 100)
+
+    return render_template('dashboard_user.html', user=user, progress=progress)
 
 # Dashboard Admin
 @app.route('/dashboard_admin', methods=['GET', 'POST'])
