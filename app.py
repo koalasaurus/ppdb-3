@@ -89,6 +89,9 @@ def form(user_id):
         
         user.phone = request.form['phone']
         user.gender = request.form['gender']
+        user.hobby = request.form['hobby']
+        user.parent_name = request.form['parent_name']
+        user.parent_job = request.form['parent_job']
         db.session.commit()
         flash('Formulir berhasil disimpan.')
         return redirect(url_for('dashboard_user', user_id=user.id))
@@ -104,12 +107,15 @@ def dashboard_user(user_id):
         return redirect(url_for('index'))
 
     # Hitung progres pendaftaran
-    total_fields = 4
+    total_fields = 7  # Total field yang harus diisi
     filled_fields = sum([
         bool(user.name),
         bool(user.email),
         bool(user.address),
-        bool(user.school)
+        bool(user.school),
+        bool(user.hobby),
+        bool(user.parent_name),
+        bool(user.parent_job)
     ])
     progress = int((filled_fields / total_fields) * 100)
 
