@@ -39,10 +39,10 @@
                     <td>{{ user.school or 'Belum diisi' }}</td>
                     <td>{{ user.status }}</td>
                     <td>
-                        <form method="POST" style="display: inline;">
+                        <form method="POST" action="{{ url_for('dashboard_admin') }}" style="display: inline;">
                             <input type="hidden" name="user_id" value="{{ user.id }}">
-                            <button type="submit" name="action" value="approve">Terima</button>
-                            <button type="submit" name="action" value="reject">Tolak</button>
+                            <button type="submit" name="action" value="approve" class="btn btn-green">Terima</button>
+                            <button type="submit" name="action" value="reject" class="btn btn-red">Tolak</button>
                         </form>
                         <a href="{{ url_for('user_detail', user_id=user.id) }}" class="btn-detail">Detail</a>
                     </td>

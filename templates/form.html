@@ -7,7 +7,7 @@
 <body>
     <div class="container">
         <h1>Formulir Pendaftaran</h1>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <label for="name">Nama Lengkap:</label>
             <input type="text" id="name" name="name" value="{{ user.name or '' }}" required><br>
 
@@ -41,6 +41,12 @@
 
             <label for="parent_job">Pekerjaan Orang Tua/Wali:</label>
             <input type="text" id="parent_job" name="parent_job" value="{{ user.parent_job or '' }}"><br>
+
+            <label for="ijazah">Unggah Foto Ijazah:</label>
+            <input type="file" id="ijazah" name="ijazah" accept="image/*"><br>
+
+            <label for="kk">Unggah Foto Kartu Keluarga:</label>
+            <input type="file" id="kk" name="kk" accept="image/*"><br>
 
             <button type="submit">Simpan</button>
         </form>

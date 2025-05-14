@@ -9,15 +9,19 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(200))
+    school = db.Column(db.String(100))
+    birth_date = db.Column(db.Date)
+    phone = db.Column(db.String(15))
+    gender = db.Column(db.String(10))
+    hobby = db.Column(db.String(100))
+    parent_name = db.Column(db.String(100))
+    parent_job = db.Column(db.String(100))
+    ijazah = db.Column(db.String(200))  # Link ke file ijazah
+    kk = db.Column(db.String(200))  # Link ke file kartu keluarga
+    ijazah_confirmed = db.Column(db.Boolean, default=False)  # Status konfirmasi ijazah
+    kk_confirmed = db.Column(db.Boolean, default=False)  # Status konfirmasi KK
     status = db.Column(db.String(20), default='Pending')  # Pending, Approved, Rejected
-    school = db.Column(db.String(100), nullable=True)  # Asal sekolah
-    address = db.Column(db.String(200), nullable=True)  # Alamat
-    birth_date = db.Column(db.Date, nullable=True)  # Tanggal lahir
-    phone = db.Column(db.String(15), nullable=True)  # Nomor telepon
-    gender = db.Column(db.String(20), nullable=True)  # Jenis kelamin
-    hobby = db.Column(db.String(200), nullable=True)  # Hobi
-    parent_name = db.Column(db.String(100), nullable=True)  # Nama orang tua/wali
-    parent_job = db.Column(db.String(100), nullable=True)  # Pekerjaan orang tua/wali
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Waktu pendaftaran
 
 # Model untuk Admin

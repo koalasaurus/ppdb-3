@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>user detail</title>
+    <title>Detail User</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/detail.css') }}">
 </head>
 <body>
- 
     <div class="container">
         <h1>Detail User</h1>
         <p><strong>Nama:</strong> {{ user.name }}</p>
@@ -20,8 +19,38 @@
         <p><strong>Pekerjaan Orang Tua/Wali:</strong> {{ user.parent_job or 'Belum diisi' }}</p>
         <p><strong>Status Pendaftaran:</strong> {{ user.status }}</p>
         <p><strong>Waktu Pendaftaran:</strong> {{ user.created_at }}</p>
+
+        <h2>Dokumen</h2>
+        <p><strong>Ijazah:</strong> 
+            {% if user.ijazah %}
+                <a href="{{ url_for('static', filename='uploads/' + user.ijazah.split('/')[-1]) }}" target="_blank">Lihat Ijazah</a>
+                {% if not user.ijazah_confirmed %}
+                    <form method="POST" action="{{ url_for('confirm_documents', user_id=user.id) }}" style="display: inline;">
+                        <button type="submit" name="document" value="ijazah" class="btn btn-green">Konfirmasi Ijazah</button>
+                    </form>
+                {% else %}
+                    <span class="status complete">✔ Sudah dikonfirmasi</span>
+                {% endif %}
+            {% else %}
+                Belum diunggah
+            {% endif %}
+        </p>
+        <p><strong>Kartu Keluarga:</strong> 
+            {% if user.kk %}
+                <a href="{{ url_for('static', filename='uploads/' + user.kk.split('/')[-1]) }}" target="_blank">Lihat Kartu Keluarga</a>
+                {% if not user.kk_confirmed %}
+                    <form method="POST" action="{{ url_for('confirm_documents', user_id=user.id) }}" style="display: inline;">
+                        <button type="submit" name="document" value="kk" class="btn btn-green">Konfirmasi KK</button>
+                    </form>
+                {% else %}
+                    <span class="status complete">✔ Sudah dikonfirmasi</span>
+                {% endif %}
+            {% else %}
+                Belum diunggah
+            {% endif %}
+        </p>
+
         <a href="{{ url_for('dashboard_admin') }}" class="btn btn-blue">Kembali ke Dashboard Admin</a>
     </div>
-  
 </body>
 </html>

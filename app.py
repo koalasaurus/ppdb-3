@@ -3,10 +3,17 @@ from models import db, User, Notification, Admin
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Inisialisasi database
 db.init_app(app)
@@ -35,7 +42,7 @@ def register():
         # Hash password sebelum menyimpannya
         hashed_password = generate_password_hash(password)
         name = request.form['name']
-        user = User(name=name, email=email, password=hashed_password)
+        user = User(name=name, email=email, password=hashed_password)  # Simpan hash password
         db.session.add(user)
         db.session.commit()
         flash('Registrasi berhasil! Silakan login.')
@@ -57,13 +64,16 @@ def login():
 
         # Periksa apakah user adalah user biasa
         user = User.query.filter_by(email=email).first()
-        if user and check_password_hash(user.password, password):
+        if user and check_password_hash(user.password, password):  # Periksa hash password
             session['user_id'] = user.id
             return redirect(url_for('dashboard_user', user_id=user.id))
 
         flash('Email atau password salah.')
         return redirect(url_for('login'))
     return render_template('login.html')
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Formulir Pendaftaran
 @app.route('/form/<int:user_id>', methods=['GET', 'POST'])
@@ -74,24 +84,81 @@ def form(user_id):
         return redirect(url_for('dashboard_user', user_id=user_id))
 
     if request.method == 'POST':
+        # Validasi input
+        if not request.form['name']:
+            flash('Nama tidak boleh kosong.')
+            return redirect(url_for('form', user_id=user_id))
+        if not request.form['address']:
+            flash('Alamat tidak boleh kosong.')
+            return redirect(url_for('form', user_id=user_id))
+        if not request.form['school']:
+            flash('Asal sekolah tidak boleh kosong.')
+            return redirect(url_for('form', user_id=user_id))
+        # Tambahkan validasi lainnya sesuai kebutuhan
+
         user.name = request.form['name']
         user.address = request.form['address']
         user.school = request.form['school']
-        
-        # Konversi birth_date dari string ke datetime.date
+
+        # Konversi string tanggal lahir ke objek datetime.date
         birth_date_str = request.form['birth_date']
         if birth_date_str:
-            try:
-                user.birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
-            except ValueError:
-                flash('Format tanggal lahir tidak valid.')
-                return redirect(url_for('form', user_id=user.id))
-        
+            user.birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
+
         user.phone = request.form['phone']
         user.gender = request.form['gender']
         user.hobby = request.form['hobby']
         user.parent_name = request.form['parent_name']
         user.parent_job = request.form['parent_job']
+
+        # Proses unggahan file ijazah
+        if 'ijazah' in request.files:
+            ijazah = request.files['ijazah']
+            if ijazah and allowed_file(ijazah.filename):
+                filename = secure_filename(f"{user.id}_ijazah_{ijazah.filename}")
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                ijazah.save(filepath)
+                user.ijazah = f"uploads/{filename}"  # Simpan path relatif ke folder static
+            else:
+                flash('File ijazah tidak valid.')
+                return redirect(url_for('form', user_id=user_id))
+
+        # Proses unggahan file kartu keluarga
+        if 'kk' in request.files:
+            kk = request.files['kk']
+            if kk and allowed_file(kk.filename):
+                filename = secure_filename(f"{user.id}_kk_{kk.filename}")
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                kk.save(filepath)
+                user.kk = f"uploads/{filename}"  # Simpan path relatif ke folder static
+            else:
+                flash('File kartu keluarga tidak valid.')
+                return redirect(url_for('form', user_id=user_id))
+
+        # Proses unggahan file ijazah
+        if 'ijazah' in request.files:
+            ijazah = request.files['ijazah']
+            if ijazah and allowed_file(ijazah.filename):
+                filename = secure_filename(f"{user.id}_ijazah_{ijazah.filename}")
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                ijazah.save(filepath)
+                user.ijazah = f"uploads/{filename}"  # Simpan path relatif ke folder static
+            else:
+                flash('File ijazah tidak valid.')
+                return redirect(url_for('form', user_id=user_id))
+
+        # Proses unggahan file kartu keluarga
+        if 'kk' in request.files:
+            kk = request.files['kk']
+            if kk and allowed_file(kk.filename):
+                filename = secure_filename(f"{user.id}_kk_{kk.filename}")
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                kk.save(filepath)
+                user.kk = f"uploads/{filename}"  # Simpan path relatif ke folder static
+            else:
+                flash('File kartu keluarga tidak valid.')
+                return redirect(url_for('form', user_id=user_id))
+
         db.session.commit()
         flash('Formulir berhasil disimpan.')
         return redirect(url_for('dashboard_user', user_id=user.id))
@@ -107,7 +174,7 @@ def dashboard_user(user_id):
         return redirect(url_for('index'))
 
     # Hitung progres pendaftaran
-    total_fields = 7  # Total field yang harus diisi
+    total_fields = 9  # Total field yang harus diisi termasuk konfirmasi dokumen
     filled_fields = sum([
         bool(user.name),
         bool(user.email),
@@ -115,7 +182,9 @@ def dashboard_user(user_id):
         bool(user.school),
         bool(user.hobby),
         bool(user.parent_name),
-        bool(user.parent_job)
+        bool(user.parent_job),
+        bool(user.ijazah_confirmed),  # Tambahkan konfirmasi ijazah
+        bool(user.kk_confirmed)       # Tambahkan konfirmasi KK
     ])
     progress = int((filled_fields / total_fields) * 100)
 
@@ -201,6 +270,7 @@ def user_detail(user_id):
     if not user:
         flash('User tidak ditemukan.')
         return redirect(url_for('dashboard_admin'))
+
     return render_template('user_detail.html', user=user)
 
 @app.route('/mark_notification_read/<int:notification_id>', methods=['POST'])
@@ -210,6 +280,24 @@ def mark_notification_read(notification_id):
         notification.is_read = True
         db.session.commit()
     return redirect(url_for('dashboard_user', user_id=notification.user_id))
+
+@app.route('/confirm_documents/<int:user_id>', methods=['POST'])
+def confirm_documents(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        flash('User tidak ditemukan.')
+        return redirect(url_for('dashboard_admin'))
+
+    document = request.form.get('document')
+    if document == 'ijazah':
+        user.ijazah_confirmed = True
+        flash('Ijazah berhasil dikonfirmasi.')
+    elif document == 'kk':
+        user.kk_confirmed = True
+        flash('Kartu Keluarga berhasil dikonfirmasi.')
+
+    db.session.commit()
+    return redirect(url_for('user_detail', user_id=user.id))
 
 if __name__ == '__main__':
     with app.app_context():

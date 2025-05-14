@@ -171,6 +171,18 @@
                     {{ '✔ Sudah diisi' if user.parent_job else '✘ Belum diisi' }}
                 </span>
             </div>
+            <div class="checklist-item">
+                <span>Ijazah</span>
+                <span class="status {{ 'complete' if user.ijazah_confirmed else 'incomplete' }}">
+                    {{ '✔ Sudah dikonfirmasi' if user.ijazah_confirmed else '✘ Belum dikonfirmasi' }}
+                </span>
+            </div>
+            <div class="checklist-item">
+                <span>Kartu Keluarga</span>
+                <span class="status {{ 'complete' if user.kk_confirmed else 'incomplete' }}">
+                    {{ '✔ Sudah dikonfirmasi' if user.kk_confirmed else '✘ Belum dikonfirmasi' }}
+                </span>
+            </div>
         </div>
 
         <h2>Aksi</h2>

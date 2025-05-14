@@ -51,3 +51,18 @@ body {
 .btn:hover {
     background-color: #005f8e; /* Biru lebih gelap */
 }
+
+/* Status */
+.status {
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.status.complete {
+    color: #52b788; /* Hijau */
+}
+
+.status.incomplete {
+    color: #e63946; /* Merah */
+}
