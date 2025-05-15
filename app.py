@@ -135,30 +135,6 @@ def form(user_id):
                 flash('File kartu keluarga tidak valid.')
                 return redirect(url_for('form', user_id=user_id))
 
-        # Proses unggahan file ijazah
-        if 'ijazah' in request.files:
-            ijazah = request.files['ijazah']
-            if ijazah and allowed_file(ijazah.filename):
-                filename = secure_filename(f"{user.id}_ijazah_{ijazah.filename}")
-                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                ijazah.save(filepath)
-                user.ijazah = f"uploads/{filename}"  # Simpan path relatif ke folder static
-            else:
-                flash('File ijazah tidak valid.')
-                return redirect(url_for('form', user_id=user_id))
-
-        # Proses unggahan file kartu keluarga
-        if 'kk' in request.files:
-            kk = request.files['kk']
-            if kk and allowed_file(kk.filename):
-                filename = secure_filename(f"{user.id}_kk_{kk.filename}")
-                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                kk.save(filepath)
-                user.kk = f"uploads/{filename}"  # Simpan path relatif ke folder static
-            else:
-                flash('File kartu keluarga tidak valid.')
-                return redirect(url_for('form', user_id=user_id))
-
         db.session.commit()
         flash('Formulir berhasil disimpan.')
         return redirect(url_for('dashboard_user', user_id=user.id))
@@ -270,6 +246,9 @@ def user_detail(user_id):
     if not user:
         flash('User tidak ditemukan.')
         return redirect(url_for('dashboard_admin'))
+
+    print("Path Ijazah:", user.ijazah)  # Debugging path ijazah
+    print("Path KK:", user.kk)          # Debugging path KK
 
     return render_template('user_detail.html', user=user)
 
