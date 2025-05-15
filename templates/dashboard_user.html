@@ -119,12 +119,12 @@
         <h1>Dashboard User</h1>
         <p>Selamat datang, <strong>{{ user.name }}</strong>! Berikut adalah informasi seputar PPDB dan progres pendaftaran Anda.</p>
 
-        <h2>Progres Pendaftaran</h2>
         <div class="progress-container">
-            <div class="progress-bar" style="width: {{ progress }}%;"></div>
-        </div>
-        <div class="progress-label">
-            Progres Pendaftaran: {{ progress }}%
+            <h3>Progres Pendaftaran</h3>
+            <div class="progress-bar">
+                <div class="progress" style="width: {{ progress }}%;"></div>
+            </div>
+            <p>{{ progress }}% selesai</p>
         </div>
 
         <h2>Checklist Pendaftaran</h2>
@@ -184,6 +184,22 @@
                 </span>
             </div>
         </div>
+
+        <h2>Status Pembayaran</h2>
+        <p>
+            {% if user.payment_status == 'Pending' %}
+                Menunggu konfirmasi admin.
+            {% elif user.payment_status == 'Approved' %}
+                ✔ Pembayaran telah diterima.
+            {% elif user.payment_status == 'Rejected' %}
+                ✘ Pembayaran ditolak. Silakan unggah ulang bukti pembayaran.
+            {% else %}
+                Belum ada pembayaran.
+            {% endif %}
+        </p>
+        {% if user.payment_status == 'Rejected' or user.payment_status is none %}
+            <a href="{{ url_for('payment', user_id=user.id) }}" class="btn btn-blue">Unggah Bukti Pembayaran</a>
+        {% endif %}
 
         <h2>Aksi</h2>
         <a href="{{ url_for('form', user_id=user.id) }}" class="btn btn-blue">Isi Formulir</a>

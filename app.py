@@ -84,6 +84,9 @@ def form(user_id):
         return redirect(url_for('dashboard_user', user_id=user_id))
 
     if request.method == 'POST':
+        # Reset status tindakan admin
+        user.is_action_taken = False
+
         # Validasi input
         if not request.form['name']:
             flash('Nama tidak boleh kosong.')
@@ -94,22 +97,10 @@ def form(user_id):
         if not request.form['school']:
             flash('Asal sekolah tidak boleh kosong.')
             return redirect(url_for('form', user_id=user_id))
-        # Tambahkan validasi lainnya sesuai kebutuhan
 
         user.name = request.form['name']
         user.address = request.form['address']
         user.school = request.form['school']
-
-        # Konversi string tanggal lahir ke objek datetime.date
-        birth_date_str = request.form['birth_date']
-        if birth_date_str:
-            user.birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
-
-        user.phone = request.form['phone']
-        user.gender = request.form['gender']
-        user.hobby = request.form['hobby']
-        user.parent_name = request.form['parent_name']
-        user.parent_job = request.form['parent_job']
 
         # Proses unggahan file ijazah
         if 'ijazah' in request.files:
@@ -118,10 +109,7 @@ def form(user_id):
                 filename = secure_filename(f"{user.id}_ijazah_{ijazah.filename}")
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 ijazah.save(filepath)
-                user.ijazah = f"uploads/{filename}"  # Simpan path relatif ke folder static
-            else:
-                flash('File ijazah tidak valid.')
-                return redirect(url_for('form', user_id=user_id))
+                user.ijazah = f"uploads/{filename}"
 
         # Proses unggahan file kartu keluarga
         if 'kk' in request.files:
@@ -130,10 +118,7 @@ def form(user_id):
                 filename = secure_filename(f"{user.id}_kk_{kk.filename}")
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 kk.save(filepath)
-                user.kk = f"uploads/{filename}"  # Simpan path relatif ke folder static
-            else:
-                flash('File kartu keluarga tidak valid.')
-                return redirect(url_for('form', user_id=user_id))
+                user.kk = f"uploads/{filename}"
 
         db.session.commit()
         flash('Formulir berhasil disimpan.')
@@ -150,7 +135,7 @@ def dashboard_user(user_id):
         return redirect(url_for('index'))
 
     # Hitung progres pendaftaran
-    total_fields = 9  # Total field yang harus diisi termasuk konfirmasi dokumen
+    total_fields = 10  # Total field yang harus diisi termasuk konfirmasi dokumen dan pembayaran
     filled_fields = sum([
         bool(user.name),
         bool(user.email),
@@ -160,7 +145,8 @@ def dashboard_user(user_id):
         bool(user.parent_name),
         bool(user.parent_job),
         bool(user.ijazah_confirmed),  # Tambahkan konfirmasi ijazah
-        bool(user.kk_confirmed)       # Tambahkan konfirmasi KK
+        bool(user.kk_confirmed),      # Tambahkan konfirmasi KK
+        user.payment_status == 'Approved'  # Tambahkan status pembayaran
     ])
     progress = int((filled_fields / total_fields) * 100)
 
@@ -176,7 +162,8 @@ def dashboard_admin():
         flash('Anda harus login sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('login'))
 
-    users = User.query.all()
+    # Urutkan user berdasarkan waktu submit terbaru
+    users = User.query.order_by(User.created_at.desc()).all()
 
     if request.method == 'POST':
         user_id = request.form.get('user_id')  # Ambil ID user dari form
@@ -187,15 +174,29 @@ def dashboard_admin():
             flash('User tidak ditemukan.')
             return redirect(url_for('dashboard_admin'))
 
-        # Proses aksi
+        # Proses aksi untuk data user
         if action == 'approve':
             user.status = 'Approved'
-            add_notification(user.id, "Pendaftaran Anda telah diterima oleh admin.")
-            flash(f'User {user.name} telah diterima.')
+            user.is_action_taken = True
+            add_notification(user.id, "Data Anda telah diterima oleh admin.")
+            flash(f'Data user {user.name} telah diterima.')
         elif action == 'reject':
             user.status = 'Rejected'
-            add_notification(user.id, "Pendaftaran Anda telah ditolak oleh admin.")
-            flash(f'User {user.name} telah ditolak.')
+            user.is_action_taken = True
+            add_notification(user.id, "Data Anda ditolak oleh admin.")
+            flash(f'Data user {user.name} ditolak.')
+
+        # Proses aksi untuk pembayaran
+        elif action == 'approve_payment':
+            user.payment_status = 'Approved'
+            user.is_payment_action_taken = True
+            add_notification(user.id, "Pembayaran Anda telah diterima oleh admin.")
+            flash(f'Pembayaran user {user.name} telah diterima.')
+        elif action == 'reject_payment':
+            user.payment_status = 'Rejected'
+            user.is_payment_action_taken = True
+            add_notification(user.id, "Pembayaran Anda ditolak oleh admin.")
+            flash(f'Pembayaran user {user.name} ditolak.')
 
         db.session.commit()  # Simpan perubahan ke database
         return redirect(url_for('dashboard_admin'))
@@ -277,6 +278,31 @@ def confirm_documents(user_id):
 
     db.session.commit()
     return redirect(url_for('user_detail', user_id=user.id))
+
+@app.route('/payment/<int:user_id>', methods=['GET', 'POST'])
+def payment(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        flash('User tidak ditemukan.')
+        return redirect(url_for('dashboard_user', user_id=user_id))
+
+    if request.method == 'POST':
+        if 'payment_proof' in request.files:
+            payment_proof = request.files['payment_proof']
+            if payment_proof and allowed_file(payment_proof.filename):
+                filename = secure_filename(f"{user.id}_payment_{payment_proof.filename}")
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                payment_proof.save(filepath)
+                user.payment_proof = f"uploads/{filename}"  # Simpan path relatif ke folder static
+                user.payment_status = 'Pending'  # Set status pembayaran menjadi Pending
+                db.session.commit()
+                flash('Bukti pembayaran berhasil dikirim. Menunggu konfirmasi admin.')
+                return redirect(url_for('dashboard_user', user_id=user.id))
+            else:
+                flash('File bukti pembayaran tidak valid.')
+                return redirect(url_for('payment', user_id=user_id))
+
+    return render_template('payment.html', user=user)
 
 if __name__ == '__main__':
     with app.app_context():

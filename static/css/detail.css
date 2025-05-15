@@ -71,7 +71,7 @@ body {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1050; /* Pastikan z-index cukup tinggi */
     left: 0;
     top: 0;
     width: 100%;
@@ -89,18 +89,58 @@ body {
     max-width: 800px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1060; /* Pastikan konten modal berada di atas */
 }
 
 .modal .close {
-    color: #aaa;
-    float: right;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: none;
+    border: none;
     font-size: 28px;
     font-weight: bold;
+    color: #aaa;
     cursor: pointer;
+    z-index: 1070; /* Pastikan tombol berada di atas */
 }
 
 .modal .close:hover,
 .modal .close:focus {
     color: #000;
     text-decoration: none;
+}
+
+/* Slider */
+.slider {
+    position: relative;
+    text-align: center;
+}
+
+.slider .prev,
+.slider .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.slider .prev {
+    left: 10px;
+}
+
+.slider .next {
+    right: 10px;
+}
+
+.slider .prev:hover,
+.slider .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }

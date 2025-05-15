@@ -23,6 +23,10 @@ class User(db.Model):
     kk_confirmed = db.Column(db.Boolean, default=False)  # Status konfirmasi KK
     status = db.Column(db.String(20), default='Pending')  # Pending, Approved, Rejected
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Waktu pendaftaran
+    payment_status = db.Column(db.String(20), default='Pending')  # Pending, Approved, Rejected
+    payment_proof = db.Column(db.String(200))  # Path ke file bukti pembayaran
+    is_action_taken = db.Column(db.Boolean, default=False)  # True jika admin sudah mengambil tindakan
+    is_payment_action_taken = db.Column(db.Boolean, default=False)  # True jika admin sudah mengambil tindakan pada pembayaran
 
 # Model untuk Admin
 class Admin(db.Model):
