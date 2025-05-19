@@ -1,217 +1,508 @@
-{% extends "base.html" %}
-
-{% block title %}PPDB Universitas Sanjaya{% endblock %}
-
-{% block content %}
-<div class="custom-hero-section d-flex flex-column flex-md-row align-items-center justify-content-between mb-5" style="position:relative;overflow:hidden;">
-    <!-- Animated background shape -->
-    <div style="position:absolute;top:-80px;right:-120px;width:340px;height:340px;z-index:0;pointer-events:none;opacity:0.18;">
-        <svg width="340" height="340" viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="170" cy="170" r="170" fill="url(#paint0_radial)" />
-            <defs>
-                <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientTransform="translate(170 170) scale(170)" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#6c63ff"/>
-                    <stop offset="1" stop-color="#5be9b9"/>
-                </radialGradient>
-            </defs>
-        </svg>
-    </div>
-    <div class="hero-text col-md-6 px-4 py-5" style="position:relative;z-index:1;">
-        <h1 class="fw-bold mb-3">Selamat Datang di PPDB Universitas Sanjaya 2024</h1>
-        <p class="mb-4">
-            Raih masa depan gemilang bersama Universitas Sanjaya! <br>
-            Jadilah bagian dari komunitas pembelajar yang inovatif, kreatif, dan berintegritas tinggi. <br>
-            Mulailah perjalanan akademikmu bersama kami hari ini.
-        </p>
-        {% if not session.get('user_id') and not session.get('admin_id') %}
-            <a href="{{ url_for('register') }}" class="btn btn-ppdb me-3 mb-2">
-                <i class="bi bi-person-plus-fill me-2"></i>Daftar Sekarang
-            </a>
-            <a href="{{ url_for('login') }}" class="btn btn-outline-ppdb mb-2">
-                <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
-            </a>
-        {% else %}
-            {% if not session.get('admin_id') %}
-                <a href="{{ url_for('dashboard_user', user_id=session.get('user_id')) }}" class="btn btn-ppdb mb-2">
-                    <i class="bi bi-grid-fill me-2"></i>Dashboard Saya
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPDB Universitas Sanjaya</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="d-flex">
+        <nav id="sidebar" class="bg-white shadow-sm p-3" style="min-width:220px;min-height:100vh;">
+            <div class="sidebar-header mb-4">
+                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                    <i class="bi bi-mortarboard-fill text-primary me-2"></i>
+                    <span class="fw-semibold">Sistem PPDB</span>
                 </a>
-            {% endif %}
-        {% endif %}
-    </div>
-    <div class="hero-img col-md-6 text-center" style="position:relative;z-index:1;">
-        <img src="{{ url_for('static', filename='img/ppdb-hero2.svg') }}" alt="PPDB Sanjaya" class="img-fluid hero-illustration">
-    </div>
-</div>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('index') }}">
+                        <i class="bi bi-house-door-fill me-2"></i> Beranda
+                    </a>
+                </li>
+                {% if session.get('user_id') or session.get('admin_id') %}
+                    {% if session.get('admin_id') %}
+                        <li class="nav-item mb-2">
+                            <a class="nav-link d-flex align-items-center" href="{{ url_for('dashboard_admin') }}">
+                                <i class="bi bi-grid-fill me-2"></i> Dashboard Admin
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item mb-2">
+                            <a class="nav-link d-flex align-items-center" href="{{ url_for('dashboard_user', user_id=session.get('user_id')) }}">
+                                <i class="bi bi-grid-fill me-2"></i> Dashboard
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item mb-2">
+                        <a class="nav-link d-flex align-items-center" href="{{ url_for('logout') }}">
+                            <i class="bi bi-box-arrow-right me-2"></i> Keluar
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item mb-2">
+                        <a class="nav-link d-flex align-items-center" href="{{ url_for('login') }}">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Masuk
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link d-flex align-items-center" href="{{ url_for('register') }}">
+                            <i class="bi bi-person-plus-fill me-2"></i> Daftar
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <!-- Main Content -->
+        <div class="flex-grow-1">
+            <!-- Navbar (optional, can be removed if sidebar is enough) -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                <div class="container-fluid">
+                    <span class="navbar-brand fw-semibold">PPDB Universitas Sanjaya</span>
+                </div>
+            </nav>
+            <main class="container mt-4">
+                <!-- Notifications Section -->
+                <div class="notifications-section mb-4">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi 
+                                            {% if category == 'success' %}bi-check-circle-fill
+                                            {% elif category == 'danger' %}bi-x-circle-fill
+                                            {% elif category == 'warning' %}bi-exclamation-triangle-fill
+                                            {% else %}bi-info-circle-fill{% endif %} 
+                                            me-2"></i>
+                                        <div>{{ message }}</div>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <!-- HERO SECTION -->
+                <div class="custom-hero-section d-flex flex-column flex-md-row align-items-center justify-content-between mb-5" style="position:relative;overflow:hidden;">
+                    <!-- Animated background shape -->
+                    <div class="hero-bg-shape"></div>
+                    <div class="hero-text col-md-6 px-4 py-5" style="position:relative;z-index:1;">
+                        <h1 class="fw-bold mb-3">Selamat Datang di <span class="text-gradient">PPDB Universitas Sanjaya 2024</span></h1>
+                        <p class="mb-4 fs-5">
+                            Wujudkan impianmu bersama kampus masa depan! <br>
+                            Bergabunglah dengan komunitas pembelajar yang inspiratif, inovatif, dan berintegritas tinggi.<br>
+                            Mulailah perjalanan akademikmu di Universitas Sanjaya hari ini.
+                        </p>
+                        {% if not session.get('user_id') and not session.get('admin_id') %}
+                            <a href="{{ url_for('register') }}" class="btn btn-ppdb me-3 mb-2">
+                                <i class="bi bi-person-plus-fill me-2"></i>Daftar Sekarang
+                            </a>
+                            <a href="{{ url_for('login') }}" class="btn btn-outline-ppdb mb-2">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
+                            </a>
+                        {% else %}
+                            {% if not session.get('admin_id') %}
+                                <a href="{{ url_for('dashboard_user', user_id=session.get('user_id')) }}" class="btn btn-ppdb mb-2">
+                                    <i class="bi bi-grid-fill me-2"></i>Dashboard Saya
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="hero-img col-md-6 text-center" style="position:relative;z-index:1;">
+                        <img src="{{ url_for('static', filename='img/ChatGPT.png') }}" alt="PPDB Sanjaya" class="img-fluid hero-illustration">
+                    </div>
+                </div>
 
-<section class="custom-programs-section py-5">
-    <div class="container">
-        <h2 class="section-title text-center mb-5">Fakultas Favorit Pilihanmu</h2>
-        <div class="row justify-content-center g-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="custom-program-card">
-                    <div class="icon-wrap bg-ppdb-light mb-3"><i class="bi bi-cpu-fill"></i></div>
-                    <h3 class="h5 mb-2">Teknologi Informasi</h3>
-                    <p class="mb-0">Jelajahi dunia digital melalui Sistem Informasi, Rekayasa Perangkat Lunak, Data Science, dan banyak lagi.</p>
+                <!-- WHY US SECTION -->
+                <section class="why-us-section py-5">
+                    <div class="container">
+                        <h2 class="section-title text-center mb-5">Kenapa Memilih Universitas Sanjaya?</h2>
+                        <div class="row g-4 justify-content-center">
+                            <div class="col-md-4">
+                                <div class="why-card">
+                                    <i class="bi bi-award-fill why-icon"></i>
+                                    <h5 class="fw-bold mb-2">Akreditasi Unggul</h5>
+                                    <p>Kampus dengan akreditasi nasional, dosen profesional, dan kurikulum berbasis industri.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="why-card">
+                                    <i class="bi bi-lightbulb-fill why-icon"></i>
+                                    <h5 class="fw-bold mb-2">Inovasi & Kreativitas</h5>
+                                    <p>Fasilitas modern, ruang kolaborasi, dan dukungan penuh untuk pengembangan ide kreatifmu.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="why-card">
+                                    <i class="bi bi-globe2 why-icon"></i>
+                                    <h5 class="fw-bold mb-2">Jaringan Global</h5>
+                                    <p>Kesempatan magang, pertukaran pelajar, dan relasi dengan perusahaan ternama di dalam & luar negeri.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PROGRAMS SECTION -->
+                <section class="custom-programs-section py-5">
+                    <div class="container">
+                        <h2 class="section-title text-center mb-5">Fakultas Favorit Pilihanmu</h2>
+                        <div class="row justify-content-center g-4">
+                            <div class="col-lg-4 col-md-6">
+                                <div class="custom-program-card">
+                                    <div class="icon-wrap bg-ppdb-light mb-3"><i class="bi bi-cpu-fill"></i></div>
+                                    <h3 class="h5 mb-2">Teknologi Informasi</h3>
+                                    <p class="mb-0">Jelajahi dunia digital melalui Sistem Informasi, Rekayasa Perangkat Lunak, Data Science, dan banyak lagi.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="custom-program-card">
+                                    <div class="icon-wrap bg-ppdb-light mb-3"><i class="bi bi-bar-chart-fill"></i></div>
+                                    <h3 class="h5 mb-2">Ekonomi & Bisnis</h3>
+                                    <p class="mb-0">Kembangkan potensi bisnis dan manajerial melalui Manajemen, Akuntansi, Bisnis Digital, dan Kewirausahaan.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="custom-program-card">
+                                    <div class="icon-wrap bg-ppdb-light mb-3"><i class="bi bi-brush-fill"></i></div>
+                                    <h3 class="h5 mb-2">Desain & Komunikasi</h3>
+                                    <p class="mb-0">Ekspresikan kreativitasmu di bidang Desain Grafis, Animasi, Komunikasi Visual, dan Media Digital.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TIMELINE SECTION -->
+                <section class="timeline-section py-5">
+                    <div class="container">
+                        <h2 class="section-title text-center mb-5">Jadwal Penting PPDB 2024</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">1 Mei - 30 Juni</span>
+                                    <span class="timeline-title">Pendaftaran Online</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">1 - 7 Juli</span>
+                                    <span class="timeline-title">Seleksi Berkas & Verifikasi</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">10 Juli</span>
+                                    <span class="timeline-title">Pengumuman Hasil Seleksi</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">11 - 20 Juli</span>
+                                    <span class="timeline-title">Daftar Ulang & Pembayaran</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- STEPS SECTION -->
+                <section class="custom-steps-section py-5">
+                    <div class="container">
+                        <h2 class="section-title text-center mb-5">Langkah Mudah Pendaftaran Online</h2>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <ul class="custom-step-list">
+                                    <li>
+                                        <span class="step-number">1</span>
+                                        <div>
+                                            <strong>Buat Akun</strong>
+                                            <p>Registrasi dengan email aktif dan isi data diri secara lengkap.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="step-number">2</span>
+                                        <div>
+                                            <strong>Upload Berkas</strong>
+                                            <p>Unggah dokumen persyaratan seperti rapor, ijazah, dan identitas diri dengan mudah.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="step-number">3</span>
+                                        <div>
+                                            <strong>Verifikasi</strong>
+                                            <p>Tim panitia akan memeriksa dan memvalidasi data serta dokumen yang kamu kirimkan.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="step-number">4</span>
+                                        <div>
+                                            <strong>Pembayaran</strong>
+                                            <p>Lakukan pembayaran biaya seleksi setelah dinyatakan lulus tahap verifikasi.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TESTIMONIAL SECTION -->
+                <section class="testimonial-section py-5">
+                    <div class="container">
+                        <h2 class="section-title text-center mb-5">Cerita Alumni</h2>
+                        <div class="row justify-content-center g-4">
+                            <div class="col-md-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-quote">“</div>
+                                    <p class="testimonial-text">Kuliah di Sanjaya membuka banyak peluang karier dan jejaring profesional. Dosen dan fasilitasnya sangat mendukung!</p>
+                                    <div class="testimonial-user">
+                                        <img src="{{ url_for('static', filename='img/alumni1.jpg') }}" alt="Alumni 1">
+                                        <div>
+                                            <strong>Rina Putri</strong><br>
+                                            Data Scientist, Alumni 2022
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-quote">“</div>
+                                    <p class="testimonial-text">Saya bisa mengembangkan kreativitas dan soft skill di berbagai organisasi kampus. Suasana belajar sangat positif!</p>
+                                    <div class="testimonial-user">
+                                        <img src="{{ url_for('static', filename='img/alumni2.jpg') }}" alt="Alumni 2">
+                                        <div>
+                                            <strong>Bagus Pratama</strong><br>
+                                            UI/UX Designer, Alumni 2021
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CONTACT SECTION -->
+                <section class="custom-contact-section py-5">
+                    <div class="container">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="custom-contact-card">
+                                    <h4 class="mb-3"><i class="bi bi-telephone-fill me-2"></i>Hubungi Panitia</h4>
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><i class="bi bi-geo-alt-fill text-ppdb me-2"></i>Jl. Pendidikan No. 45, Jakarta</li>
+                                        <li class="mb-2"><i class="bi bi-envelope-fill text-ppdb me-2"></i>ppdb@univsanjaya.ac.id</li>
+                                        <li><i class="bi bi-whatsapp text-ppdb me-2"></i>0812-3456-7890</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="custom-contact-card">
+                                    <h4 class="mb-3"><i class="bi bi-award-fill me-2"></i>Pilihan Jalur Pendaftaran</h4>
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><span class="badge bg-ppdb">Prestasi</span> Untuk siswa berprestasi tingkat nasional maupun internasional.</li>
+                                        <li class="mb-2"><span class="badge bg-ppdb">Reguler</span> Seleksi umum terbuka untuk seluruh calon mahasiswa.</li>
+                                        <li><span class="badge bg-ppdb">Kemitraan</span> Program khusus kerja sama dengan institusi atau perusahaan mitra.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            <!-- Footer -->
+            <footer class="footer mt-auto py-3 bg-light">
+                <div class="container text-center">
+                    <span class="text-muted">© 2024 Sistem PPDB. All rights reserved.</span>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="custom-program-card">
-                    <div class="icon-wrap bg-ppdb-light mb-3"><i class="bi bi-bar-chart-fill"></i></div>
-                    <h3 class="h5 mb-2">Ekonomi & Bisnis</h3>
-                    <p class="mb-0">Kembangkan potensi bisnis dan manajerial melalui Manajemen, Akuntansi, Bisnis Digital, dan Kewirausahaan.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="custom-program-card">
-                    <div class="icon-wrap bg-ppdb-light mb-3"><i class="bi bi-brush-fill"></i></div>
-                    <h3 class="h5 mb-2">Desain & Komunikasi</h3>
-                    <p class="mb-0">Ekspresikan kreativitasmu di bidang Desain Grafis, Animasi, Komunikasi Visual, dan Media Digital.</p>
-                </div>
-            </div>
+            </footer>
         </div>
     </div>
-</section>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
 
-<section class="custom-steps-section py-5">
-    <div class="container">
-        <h2 class="section-title text-center mb-5">Langkah Mudah Pendaftaran Online</h2>
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <ul class="custom-step-list">
-                    <li>
-                        <span class="step-number">1</span>
-                        <div>
-                            <strong>Buat Akun</strong>
-                            <p>Daftarkan dirimu dengan email aktif dan lengkapi data pribadi secara lengkap.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="step-number">2</span>
-                        <div>
-                            <strong>Upload Berkas</strong>
-                            <p>Unggah dokumen persyaratan seperti rapor, ijazah, dan identitas diri dengan mudah.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="step-number">3</span>
-                        <div>
-                            <strong>Verifikasi</strong>
-                            <p>Tim panitia akan memeriksa dan memvalidasi data serta dokumen yang kamu kirimkan.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="step-number">4</span>
-                        <div>
-                            <strong>Pembayaran</strong>
-                            <p>Lakukan pembayaran biaya seleksi setelah dinyatakan lulus tahap verifikasi.</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="custom-contact-section py-5">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="custom-contact-card">
-                    <h4 class="mb-3"><i class="bi bi-telephone-fill me-2"></i>Hubungi Panitia</h4>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2"><i class="bi bi-geo-alt-fill text-ppdb me-2"></i>Jl. Pendidikan No. 45, Jakarta</li>
-                        <li class="mb-2"><i class="bi bi-envelope-fill text-ppdb me-2"></i>ppdb@univsanjaya.ac.id</li>
-                        <li><i class="bi bi-whatsapp text-ppdb me-2"></i>0812-3456-7890</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="custom-contact-card">
-                    <h4 class="mb-3"><i class="bi bi-award-fill me-2"></i>Pilihan Jalur Pendaftaran</h4>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2"><span class="badge bg-ppdb">Prestasi</span> Untuk siswa berprestasi tingkat nasional maupun internasional.</li>
-                        <li class="mb-2"><span class="badge bg-ppdb">Reguler</span> Seleksi umum terbuka untuk seluruh calon mahasiswa.</li>
-                        <li><span class="badge bg-ppdb">Kemitraan</span> Program khusus kerja sama dengan institusi atau perusahaan mitra.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endblock %}
-
-<!-- Sidebar Modern -->
+<!-- Custom CSS for new sections -->
 <style>
-.sidebar {
-    position: fixed;
+/* Hero Gradient Text */
+.text-gradient {
+    background: linear-gradient(90deg, #6c63ff 40%, #5be9b9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Hero Background Shape */
+.hero-bg-shape {
+    position: absolute;
+    top: -100px;
+    left: -120px;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle at 60% 40%, #6c63ff 0%, #5be9b9 100%);
+    opacity: 0.13;
+    z-index: 0;
+    border-radius: 50%;
+    filter: blur(8px);
+}
+
+/* Why Us Section */
+.why-us-section .why-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(108,99,255,0.08);
+    padding: 32px 24px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid #f3f7ff;
+    min-height: 260px;
+}
+.why-us-section .why-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(91,233,185,0.13);
+    border-color: #5be9b9;
+}
+.why-us-section .why-icon {
+    font-size: 2.5rem;
+    color: #6c63ff;
+    margin-bottom: 16px;
+}
+
+/* Timeline Section */
+.timeline-section .timeline {
+    position: relative;
+    margin: 0 auto;
+    max-width: 700px;
+    padding-left: 20px;
+}
+.timeline-section .timeline:before {
+    content: '';
+    position: absolute;
+    left: 24px;
     top: 0;
-    left: 0;
-    height: 100vh;
-    width: 220px;
-    background: #0077b6;
-    color: #fff;
-    padding: 30px 0 0 0;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.05);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #6c63ff, #5be9b9);
+    border-radius: 2px;
 }
-.sidebar .sidebar-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 40px;
-    color: #fff;
-    letter-spacing: 1px;
-}
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-    width: 100%;
-}
-.sidebar ul li {
-    width: 100%;
-}
-.sidebar ul li a {
+.timeline-section .timeline-item {
     display: flex;
     align-items: center;
-    padding: 14px 30px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 16px;
-    transition: background 0.2s;
+    margin-bottom: 36px;
+    position: relative;
 }
-.sidebar ul li a i {
-    margin-right: 12px;
-    font-size: 18px;
+.timeline-section .timeline-dot {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #6c63ff, #5be9b9);
+    border-radius: 50%;
+    margin-right: 24px;
+    z-index: 1;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(108,99,255,0.10);
 }
-.sidebar ul li a.active,
-.sidebar ul li a:hover {
-    background: #00b4d8;
-    color: #fff;
-    border-left: 4px solid #52b788;
+.timeline-section .timeline-content {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(108,99,255,0.06);
+    padding: 18px 28px;
+    min-width: 220px;
 }
+.timeline-section .timeline-date {
+    font-size: 1rem;
+    color: #6c63ff;
+    font-weight: 600;
+}
+.timeline-section .timeline-title {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+    display: block;
+}
+
+/* Testimonial Section */
+.testimonial-section .testimonial-card {
+    background: linear-gradient(120deg, #f3f7ff 80%, #e0e7ff 100%);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(108,99,255,0.08);
+    padding: 32px 24px 24px 24px;
+    text-align: left;
+    min-height: 260px;
+    position: relative;
+    overflow: hidden;
+}
+.testimonial-section .testimonial-quote {
+    font-size: 3rem;
+    color: #6c63ff;
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    opacity: 0.15;
+    z-index: 0;
+}
+.testimonial-section .testimonial-text {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+}
+.testimonial-section .testimonial-user {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    z-index: 1;
+}
+.testimonial-section .testimonial-user img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #6c63ff;
+}
+
+/* Responsive */
 @media (max-width: 900px) {
-    .sidebar {
-        width: 60px;
-        padding: 20px 0 0 0;
+    .timeline-section .timeline {
+        padding-left: 0;
     }
-    .sidebar .sidebar-title,
-    .sidebar ul li a span {
-        display: none;
+    .timeline-section .timeline:before {
+        left: 12px;
     }
-    .sidebar ul li a {
-        justify-content: center;
-        padding: 14px 0;
+    .timeline-section .timeline-dot {
+        margin-right: 12px;
     }
 }
-.main-content {
-    margin-left: 220px;
-    padding: 30px 20px 20px 20px;
-}
-@media (max-width: 900px) {
-    .main-content {
-        margin-left: 60px;
+@media (max-width: 768px) {
+    .testimonial-section .testimonial-card {
+        min-height: 200px;
+        padding: 24px 12px 18px 12px;
+    }
+    .why-us-section .why-card {
+        min-height: 180px;
+        padding: 24px 12px;
     }
 }
 </style>

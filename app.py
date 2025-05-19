@@ -101,6 +101,7 @@ def form(user_id):
         user.name = request.form['name']
         user.address = request.form['address']
         user.school = request.form['school']
+        user.faculty = request.form.get('faculty')
 
         # Proses unggahan file ijazah
         if 'ijazah' in request.files:
@@ -135,8 +136,7 @@ def dashboard_user(user_id):
         return redirect(url_for('index'))
 
     # Hitung progres pendaftaran
-    total_fields = 11  # Total field yang harus diisi termasuk konfirmasi dokumen dan pembayaran
-    filled_fields = sum([
+    fields = [
         bool(user.name),
         bool(user.email),
         bool(user.address),
@@ -144,10 +144,12 @@ def dashboard_user(user_id):
         bool(user.hobby),
         bool(user.parent_name),
         bool(user.parent_job),
-        bool(user.ijazah_confirmed),  # Tambahkan konfirmasi ijazah
-        bool(user.kk_confirmed),      # Tambahkan konfirmasi KK
-        user.payment_status == 'Approved'  # Tambahkan status pembayaran
-    ])
+        bool(user.ijazah_confirmed),
+        bool(user.kk_confirmed),
+        user.payment_status == 'Approved'
+    ]
+    total_fields = len(fields)
+    filled_fields = sum(fields)
     progress = int((filled_fields / total_fields) * 100)
 
     # Ambil notifikasi terbaru untuk user

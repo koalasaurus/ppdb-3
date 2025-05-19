@@ -1,8 +1,8 @@
 /* Background setup */
 body.login {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f9f9f9; /* Putih terang */
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f3f7ff 0%, #e0e7ff 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,8 +13,8 @@ body.login {
 .form-container {
     background-color: #ffffff; /* Putih */
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(108,99,255,0.08);
     width: 400px;
     text-align: center;
 }
@@ -23,7 +23,7 @@ body.login {
 .header {
     font-size: 24px;
     font-weight: bold;
-    color: #0077b6; /* Biru */
+    color: #6c63ff;
     margin-bottom: 20px;
 }
 
@@ -73,19 +73,23 @@ body.login {
 
 /* Button */
 .btn {
-    background-color: #52b788; /* Hijau */
+    background-color: #6c63ff;
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background 0.2s, color 0.2s;
     width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    box-shadow: 0 2px 12px rgba(108,99,255,0.10);
 }
 
 .btn:hover {
-    background-color: #409e6f; /* Hijau lebih gelap */
+    background-color: #5be9b9;
+    color: #222;
 }
 
 /* Optional link for forgot password */

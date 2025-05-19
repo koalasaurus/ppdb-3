@@ -48,6 +48,14 @@
             <label for="kk">Unggah Foto Kartu Keluarga:</label>
             <input type="file" id="kk" name="kk" accept="image/*"><br>
 
+            <label for="faculty">Fakultas Pilihan:</label>
+            <select id="faculty" name="faculty" required>
+                <option value="" disabled selected>Pilih Fakultas</option>
+                <option value="Teknologi Informasi" {% if user.faculty == 'Teknologi Informasi' %}selected{% endif %}>Teknologi Informasi</option>
+                <option value="Ekonomi & Bisnis" {% if user.faculty == 'Ekonomi & Bisnis' %}selected{% endif %}>Ekonomi & Bisnis</option>
+                <option value="Desain & Komunikasi" {% if user.faculty == 'Desain & Komunikasi' %}selected{% endif %}>Desain & Komunikasi</option>
+            </select><br>
+
             <button type="submit">Simpan</button>
         </form>
     </div>

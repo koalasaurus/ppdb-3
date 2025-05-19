@@ -120,71 +120,74 @@
         <p>Selamat datang, <strong>{{ user.name }}</strong>! Berikut adalah informasi seputar PPDB dan progres pendaftaran Anda.</p>
 
         <div class="progress-container">
-            <h3>Progres Pendaftaran</h3>
-            <div class="progress-bar">
-                <div class="progress" style="width: {{ progress }}%;"></div>
+            <div class="progress-label">
+                Progres Pendaftaran <span style="float:right;">{{ progress }}%</span>
             </div>
-            <p class="progress-label">{{ progress }}% selesai</p>
+            <div class="progress">
+                <div class="progress-bar" style="width: {{ progress }}%;">
+                    {{ progress }}%
+                </div>
+            </div>
         </div>
 
         <h2>Checklist Pendaftaran</h2>
-        <div class="checklist">
-            <div class="checklist-item">
-                <span>Nama</span>
+        <ul class="checklist-list">
+            <li>
+                Nama
                 <span class="status {{ 'complete' if user.name else 'incomplete' }}">
                     {{ '✔ Sudah diisi' if user.name else '✘ Belum diisi' }}
                 </span>
-            </div>
-            <div class="checklist-item">
-                <span>Email</span>
+            </li>
+            <li>
+                Email
                 <span class="status {{ 'complete' if user.email else 'incomplete' }}">
                     {{ '✔ Sudah diisi' if user.email else '✘ Belum diisi' }}
                 </span>
-            </div>
-            <div class="checklist-item">
-                <span>Alamat</span>
+            </li>
+            <li>
+                Alamat
                 <span class="status {{ 'complete' if user.address else 'incomplete' }}">
                     {{ '✔ Sudah diisi' if user.address else '✘ Belum diisi' }}
                 </span>
-            </div>
-            <div class="checklist-item">
-                <span>Asal Sekolah</span>
+            </li>
+            <li>
+                Asal Sekolah
                 <span class="status {{ 'complete' if user.school else 'incomplete' }}">
                     {{ '✔ Sudah diisi' if user.school else '✘ Belum diisi' }}
                 </span>
-            </div>
-            <div class="checklist-item">
-                <span>Hobi</span>
+            </li>
+            <li>
+                Hobi
                 <span class="status {{ 'complete' if user.hobby else 'incomplete' }}">
                     {{ '✔ Sudah diisi' if user.hobby else '✘ Belum diisi' }}
                 </span>
-            </div>
-            <div class="checklist-item">
-                <span>Nama Orang Tua/Wali</span>
+            </li>
+            <li>
+                Nama Orang Tua/Wali
                 <span class="status {{ 'complete' if user.parent_name else 'incomplete' }}">
                     {{ '✔ Sudah diisi' if user.parent_name else '✘ Belum diisi' }}
                 </span>
-            </div>
-            <div class="checklist-item">
-                <span>Pekerjaan Orang Tua/Wali</span>
+            </li>
+            <li>
+                Pekerjaan Orang Tua/Wali
                 <span class="status {{ 'complete' if user.parent_job else 'incomplete' }}">
                     {{ '✔ Sudah diisi' if user.parent_job else '✘ Belum diisi' }}
                 </span>
-            </div>
-            <div class="checklist-item">
-                <span>Ijazah</span>
+            </li>
+            <li>
+                Ijazah
                 <span class="status {{ 'complete' if user.ijazah_confirmed else 'incomplete' }}">
                     {{ '✔ Sudah dikonfirmasi' if user.ijazah_confirmed else '✘ Belum dikonfirmasi' }}
                 </span>
-            </div>
-            <div class="checklist-item">
-                <span>Kartu Keluarga</span>
+            </li>
+            <li>
+                Kartu Keluarga
                 <span class="status {{ 'complete' if user.kk_confirmed else 'incomplete' }}">
                     {{ '✔ Sudah dikonfirmasi' if user.kk_confirmed else '✘ Belum dikonfirmasi' }}
                 </span>
-            </div>
-            <div class="checklist-item">
-                <span>Pembayaran</span>
+            </li>
+            <li>
+                Pembayaran
                 <span class="status {{ 'complete' if user.payment_status == 'Approved' else 'incomplete' }}">
                     {% if user.payment_status == 'Approved' %}
                         ✔ Sudah dikonfirmasi
@@ -194,8 +197,8 @@
                         ✘ Belum ada pembayaran
                     {% endif %}
                 </span>
-            </div>
-        </div>
+            </li>
+        </ul>
 
         <h2>Status Pembayaran</h2>
         <p>

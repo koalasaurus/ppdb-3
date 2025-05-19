@@ -27,6 +27,7 @@ class User(db.Model):
     payment_proof = db.Column(db.String(200))  # Path ke file bukti pembayaran
     is_action_taken = db.Column(db.Boolean, default=False)  # True jika admin sudah mengambil tindakan
     is_payment_action_taken = db.Column(db.Boolean, default=False)  # True jika admin sudah mengambil tindakan pada pembayaran
+    faculty = db.Column(db.String(100))  # Fakultas pilihan user
 
 # Model untuk Admin
 class Admin(db.Model):
