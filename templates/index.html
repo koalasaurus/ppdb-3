@@ -1,48 +1,217 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>PPDB Homepage</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <div class="navbar-brand">PPDB</div>
-            <div class="navbar-buttons">
-                <a href="/register" class="btn btn-blue">Daftar</a>
-                <a href="/login" class="btn btn-green">Login</a>
+{% block title %}PPDB Universitas Sanjaya{% endblock %}
+
+{% block content %}
+<div class="custom-hero-section d-flex flex-column flex-md-row align-items-center justify-content-between mb-5" style="position:relative;overflow:hidden;">
+    <!-- Animated background shape -->
+    <div style="position:absolute;top:-80px;right:-120px;width:340px;height:340px;z-index:0;pointer-events:none;opacity:0.18;">
+        <svg width="340" height="340" viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="170" cy="170" r="170" fill="url(#paint0_radial)" />
+            <defs>
+                <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientTransform="translate(170 170) scale(170)" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#6c63ff"/>
+                    <stop offset="1" stop-color="#5be9b9"/>
+                </radialGradient>
+            </defs>
+        </svg>
+    </div>
+    <div class="hero-text col-md-6 px-4 py-5" style="position:relative;z-index:1;">
+        <h1 class="fw-bold mb-3">Selamat Datang di PPDB Universitas Sanjaya 2024</h1>
+        <p class="mb-4">
+            Raih masa depan gemilang bersama Universitas Sanjaya! <br>
+            Jadilah bagian dari komunitas pembelajar yang inovatif, kreatif, dan berintegritas tinggi. <br>
+            Mulailah perjalanan akademikmu bersama kami hari ini.
+        </p>
+        {% if not session.get('user_id') and not session.get('admin_id') %}
+            <a href="{{ url_for('register') }}" class="btn btn-ppdb me-3 mb-2">
+                <i class="bi bi-person-plus-fill me-2"></i>Daftar Sekarang
+            </a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-ppdb mb-2">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
+            </a>
+        {% else %}
+            {% if not session.get('admin_id') %}
+                <a href="{{ url_for('dashboard_user', user_id=session.get('user_id')) }}" class="btn btn-ppdb mb-2">
+                    <i class="bi bi-grid-fill me-2"></i>Dashboard Saya
+                </a>
+            {% endif %}
+        {% endif %}
+    </div>
+    <div class="hero-img col-md-6 text-center" style="position:relative;z-index:1;">
+        <img src="{{ url_for('static', filename='img/ppdb-hero2.svg') }}" alt="PPDB Sanjaya" class="img-fluid hero-illustration">
+    </div>
+</div>
+
+<section class="custom-programs-section py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Fakultas Favorit Pilihanmu</h2>
+        <div class="row justify-content-center g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="custom-program-card">
+                    <div class="icon-wrap bg-ppdb-light mb-3"><i class="bi bi-cpu-fill"></i></div>
+                    <h3 class="h5 mb-2">Teknologi Informasi</h3>
+                    <p class="mb-0">Jelajahi dunia digital melalui Sistem Informasi, Rekayasa Perangkat Lunak, Data Science, dan banyak lagi.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="custom-program-card">
+                    <div class="icon-wrap bg-ppdb-light mb-3"><i class="bi bi-bar-chart-fill"></i></div>
+                    <h3 class="h5 mb-2">Ekonomi & Bisnis</h3>
+                    <p class="mb-0">Kembangkan potensi bisnis dan manajerial melalui Manajemen, Akuntansi, Bisnis Digital, dan Kewirausahaan.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="custom-program-card">
+                    <div class="icon-wrap bg-ppdb-light mb-3"><i class="bi bi-brush-fill"></i></div>
+                    <h3 class="h5 mb-2">Desain & Komunikasi</h3>
+                    <p class="mb-0">Ekspresikan kreativitasmu di bidang Desain Grafis, Animasi, Komunikasi Visual, dan Media Digital.</p>
+                </div>
             </div>
         </div>
-    </nav>
-
-    <!-- Layout utama: sidebar + konten -->
-    <div class="layout">
-        <aside class="sidebar">
-            <h2>Menu</h2>
-            <ul>
-                <li><a href="/" class="btn btn-blue">Homepage</a></li>
-            </ul>
-        </aside>
-
-        <main class="main-content">
-            <h1>Selamat Datang di PPDB</h1>
-            <p>Silakan baca informasi cara pendaftaran di bawah ini:</p>
-
-            <div class="info-box">
-                <h2>Informasi Cara Pendaftaran</h2>
-                <ol>
-                    <li>Klik tombol <strong>Daftar</strong> untuk membuat akun.</li>
-                    <li>Login menggunakan email dan password yang telah didaftarkan.</li>
-                    <li>Isi formulir pendaftaran dengan data yang valid.</li>
-                    <li>Tunggu konfirmasi dari admin melalui dashboard user Anda.</li>
-                    <li>Jika diterima, Anda akan mendapatkan notifikasi di dashboard.</li>
-                </ol>
-            </div>
-        </main>
     </div>
+</section>
 
-</body>
-</html>
+<section class="custom-steps-section py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Langkah Mudah Pendaftaran Online</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <ul class="custom-step-list">
+                    <li>
+                        <span class="step-number">1</span>
+                        <div>
+                            <strong>Buat Akun</strong>
+                            <p>Daftarkan dirimu dengan email aktif dan lengkapi data pribadi secara lengkap.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-number">2</span>
+                        <div>
+                            <strong>Upload Berkas</strong>
+                            <p>Unggah dokumen persyaratan seperti rapor, ijazah, dan identitas diri dengan mudah.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-number">3</span>
+                        <div>
+                            <strong>Verifikasi</strong>
+                            <p>Tim panitia akan memeriksa dan memvalidasi data serta dokumen yang kamu kirimkan.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-number">4</span>
+                        <div>
+                            <strong>Pembayaran</strong>
+                            <p>Lakukan pembayaran biaya seleksi setelah dinyatakan lulus tahap verifikasi.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="custom-contact-section py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="custom-contact-card">
+                    <h4 class="mb-3"><i class="bi bi-telephone-fill me-2"></i>Hubungi Panitia</h4>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><i class="bi bi-geo-alt-fill text-ppdb me-2"></i>Jl. Pendidikan No. 45, Jakarta</li>
+                        <li class="mb-2"><i class="bi bi-envelope-fill text-ppdb me-2"></i>ppdb@univsanjaya.ac.id</li>
+                        <li><i class="bi bi-whatsapp text-ppdb me-2"></i>0812-3456-7890</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="custom-contact-card">
+                    <h4 class="mb-3"><i class="bi bi-award-fill me-2"></i>Pilihan Jalur Pendaftaran</h4>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><span class="badge bg-ppdb">Prestasi</span> Untuk siswa berprestasi tingkat nasional maupun internasional.</li>
+                        <li class="mb-2"><span class="badge bg-ppdb">Reguler</span> Seleksi umum terbuka untuk seluruh calon mahasiswa.</li>
+                        <li><span class="badge bg-ppdb">Kemitraan</span> Program khusus kerja sama dengan institusi atau perusahaan mitra.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+<!-- Sidebar Modern -->
+<style>
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 220px;
+    background: #0077b6;
+    color: #fff;
+    padding: 30px 0 0 0;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.sidebar .sidebar-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #fff;
+    letter-spacing: 1px;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+.sidebar ul li {
+    width: 100%;
+}
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    padding: 14px 30px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+.sidebar ul li a i {
+    margin-right: 12px;
+    font-size: 18px;
+}
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+    background: #00b4d8;
+    color: #fff;
+    border-left: 4px solid #52b788;
+}
+@media (max-width: 900px) {
+    .sidebar {
+        width: 60px;
+        padding: 20px 0 0 0;
+    }
+    .sidebar .sidebar-title,
+    .sidebar ul li a span {
+        display: none;
+    }
+    .sidebar ul li a {
+        justify-content: center;
+        padding: 14px 0;
+    }
+}
+.main-content {
+    margin-left: 220px;
+    padding: 30px 20px 20px 20px;
+}
+@media (max-width: 900px) {
+    .main-content {
+        margin-left: 60px;
+    }
+}
+</style>

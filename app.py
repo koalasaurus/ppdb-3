@@ -135,7 +135,7 @@ def dashboard_user(user_id):
         return redirect(url_for('index'))
 
     # Hitung progres pendaftaran
-    total_fields = 10  # Total field yang harus diisi termasuk konfirmasi dokumen dan pembayaran
+    total_fields = 11  # Total field yang harus diisi termasuk konfirmasi dokumen dan pembayaran
     filled_fields = sum([
         bool(user.name),
         bool(user.email),
@@ -247,9 +247,6 @@ def user_detail(user_id):
     if not user:
         flash('User tidak ditemukan.')
         return redirect(url_for('dashboard_admin'))
-
-    print("Path Ijazah:", user.ijazah)  # Debugging path ijazah
-    print("Path KK:", user.kk)          # Debugging path KK
 
     return render_template('user_detail.html', user=user)
 

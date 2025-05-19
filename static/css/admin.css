@@ -47,7 +47,6 @@ body {
 }
 
 /* Table style */
-/* Tabel */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -108,35 +107,6 @@ button[name="action"][value="reject"]:hover {
     background-color: #d62828; /* Merah lebih gelap */
 }
 
-button[name="action"][value="approve_payment"] {
-    background-color: #52b788; /* Hijau */
-}
-
-button[name="action"][value="approve_payment"]:hover {
-    background-color: #409e6f; /* Hijau lebih gelap */
-}
-
-button[name="action"][value="reject_payment"] {
-    background-color: #e63946; /* Merah */
-}
-
-button[name="action"][value="reject_payment"]:hover {
-    background-color: #d62828; /* Merah lebih gelap */
-}
-
-.btn-detail {
-    background-color: #0077b6; /* Biru */
-    padding: 8px 10px;
-    border-radius: 4px;
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.btn-detail:hover {
-    background-color: #005f8e;
-}
-
 /* Tombol */
 button {
     padding: 8px 16px;
@@ -147,69 +117,84 @@ button {
     transition: background-color 0.2s;
 }
 
-/* Tombol aktif */
-button[name="action"][value="approve"] {
+button.btn-green {
     background-color: #52b788; /* Hijau */
     color: white;
 }
 
-button[name="action"][value="approve"]:hover {
+button.btn-green:hover {
     background-color: #409e6f; /* Hijau lebih gelap */
 }
 
-button[name="action"][value="reject"] {
+button.btn-red {
     background-color: #e63946; /* Merah */
     color: white;
 }
 
-button[name="action"][value="reject"]:hover {
+button.btn-red:hover {
     background-color: #d62828; /* Merah lebih gelap */
 }
 
-/* Tombol tidak aktif (disabled) hanya untuk tombol aksi */
-button[name="action"][value="approve"]:disabled,
-button[name="action"][value="reject"]:disabled,
-button[name="action"][value="approve_payment"]:disabled,
-button[name="action"][value="reject_payment"]:disabled {
-    background-color: #d3d3d3; /* Abu-abu */
-    color: #808080; /* Abu-abu gelap */
-    cursor: not-allowed; /* Ubah kursor menjadi tanda larangan */
-}
-
-/* Tombol aktif (Lihat Bukti Pembayaran) */
 button.btn-blue {
     background-color: #007bff; /* Biru */
     color: white;
-    cursor: pointer;
 }
 
 button.btn-blue:hover {
     background-color: #0056b3; /* Biru lebih gelap */
 }
 
+a.btn-detail {
+    background-color: #0077b6; /* Biru */
+    padding: 8px 10px;
+    border-radius: 4px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+a.btn-detail:hover {
+    background-color: #005f8e;
+}
+
+/* Tombol tidak aktif (disabled) hanya untuk tombol aksi */
+button[name="action"][value="approve"]:disabled,
+button[name="action"][value="reject"]:disabled {
+    background-color: #d3d3d3; /* Abu-abu */
+    color: #808080; /* Abu-abu gelap */
+    cursor: not-allowed; /* Ubah kursor menjadi tanda larangan */
+}
+
 /* Modal */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1050;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
     background-color: #fff;
     margin: 10% auto;
-    padding: 20px;
+    padding: 20px 25px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 800px;
+    max-width: 600px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
+}
+
+.modal-content h3 {
+    color: #0077b6;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .modal .close {
@@ -228,4 +213,19 @@ button.btn-blue:hover {
 .modal .close:focus {
     color: #000;
     text-decoration: none;
+}
+
+/* Payment approval buttons in modal */
+.modal-content form {
+    margin-top: 15px;
+}
+
+.modal-content form button {
+    margin: 0 5px;
+}
+
+/* Hide payment buttons in table */
+td form button[name="action"][value="approve_payment"],
+td form button[name="action"][value="reject_payment"] {
+    display: none !important;
 }

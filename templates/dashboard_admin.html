@@ -2,17 +2,140 @@
 <html>
 <head>
     <title>Dashboard Admin</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin.css') }}">
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
-
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    
     <style>
-        /* CSS untuk modal */
+        /* Basic styling */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #0275d8;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .navbar-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 30px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .container h1 {
+            margin: 30px 0;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Buttons - Fixed style */
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 2px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-green {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-red {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-blue, .btn-detail {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .btn:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        /* DataTables Customization */
+        .dataTables_wrapper {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        table.dataTable thead th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: bold;
+            padding: 12px 10px;
+        }
+
+        table.dataTable tbody td {
+            padding: 10px;
+            vertical-align: middle;
+        }
+
+        table.dataTable tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Critical fixes for button container */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
+
+        /* Modal styling */
         .modal {
             display: none;
             position: fixed;
@@ -22,7 +145,6 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0,0,0);
             background-color: rgba(0,0,0,0.4);
         }
 
@@ -33,6 +155,7 @@
             border: 1px solid #888;
             width: 80%;
             max-width: 600px;
+            border-radius: 5px;
         }
 
         .close {
@@ -79,33 +202,34 @@
             <tbody>
                 {% for user in users %}
                 <tr>
-                    <td>{{ loop.index }}</td> <!-- Penomoran otomatis -->
+                    <td>{{ loop.index }}</td>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.address or 'Belum diisi' }}</td>
                     <td>{{ user.school or 'Belum diisi' }}</td>
                     <td>{{ user.status }}</td>
                     <td>
-                        <form method="POST" action="{{ url_for('dashboard_admin') }}" style="display: inline;">
-                            <input type="hidden" name="user_id" value="{{ user.id }}">
-                            <button type="submit" name="action" value="approve" class="btn btn-green" 
-                                {% if user.is_action_taken %}disabled{% endif %}>Terima</button>
-                            <button type="submit" name="action" value="reject" class="btn btn-red" 
-                                {% if user.is_action_taken %}disabled{% endif %}>Tolak</button>
-                        </form>
-                        {% if user.payment_proof %}
-                            <button onclick="viewPaymentProof('{{ url_for('static', filename=user.payment_proof) }}', {{ user.id }})" 
-                                class="btn btn-blue">Lihat Bukti</button>
-                            <form method="POST" action="{{ url_for('dashboard_admin') }}" style="display: inline;">
+                        <div class="action-buttons">
+                            <!-- Application Status Buttons -->
+                            <form method="POST" action="{{ url_for('dashboard_admin') }}">
                                 <input type="hidden" name="user_id" value="{{ user.id }}">
-                                <button type="submit" name="action" value="approve_payment" class="btn btn-green" 
-                                    {% if user.is_payment_action_taken %}disabled{% endif %}>Terima Pembayaran</button>
-                                <button type="submit" name="action" value="reject_payment" class="btn btn-red" 
-                                    {% if user.is_payment_action_taken %}disabled{% endif %}>Tolak Pembayaran</button>
+                                <button type="submit" name="action" value="approve" class="btn btn-green" 
+                                    {% if user.is_action_taken %}disabled{% endif %}>Terima</button>
+                                <button type="submit" name="action" value="reject" class="btn btn-red" 
+                                    {% if user.is_action_taken %}disabled{% endif %}>Tolak</button>
                             </form>
-                        {% else %}
-                            <p>Belum ada bukti pembayaran</p>
-                        {% endif %}
+                            
+                            <!-- Detail Button - Fixed -->
+                            <a href="{{ url_for('user_detail', user_id=user.id) }}" class="btn btn-detail">Detail</a>
+                            
+                            <!-- Payment Proof Button/Status -->
+                            {% if user.payment_proof %}
+                                <button onclick="viewPaymentProof('{{ url_for('static', filename=user.payment_proof) }}', {{ user.id }})" 
+                                    class="btn btn-blue">Lihat Bukti</button>
+                            {% else %}
+                                <span>Belum ada bukti pembayaran</span>
+                            {% endif %}
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}
@@ -117,11 +241,14 @@
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <button class="close" onclick="closePaymentModal()">×</button>
-            <img id="paymentImage" src="" style="width: 100%; max-height: 500px; object-fit: contain;">
+            <h3>Bukti Pembayaran</h3>
+            <img id="paymentImage" src="" style="width: 100%; max-height: 500px; object-fit: contain; margin-bottom: 20px;">
             <form method="POST" action="{{ url_for('dashboard_admin') }}">
                 <input type="hidden" id="paymentUserId" name="user_id" value="">
-                <button type="submit" name="action" value="approve_payment" class="btn btn-green">Terima Pembayaran</button>
-                <button type="submit" name="action" value="reject_payment" class="btn btn-red">Tolak Pembayaran</button>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button type="submit" name="action" value="approve_payment" class="btn btn-green">Terima Pembayaran</button>
+                    <button type="submit" name="action" value="reject_payment" class="btn btn-red">Tolak Pembayaran</button>
+                </div>
             </form>
         </div>
     </div>

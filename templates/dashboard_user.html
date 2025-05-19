@@ -124,7 +124,7 @@
             <div class="progress-bar">
                 <div class="progress" style="width: {{ progress }}%;"></div>
             </div>
-            <p>{{ progress }}% selesai</p>
+            <p class="progress-label">{{ progress }}% selesai</p>
         </div>
 
         <h2>Checklist Pendaftaran</h2>
@@ -181,6 +181,18 @@
                 <span>Kartu Keluarga</span>
                 <span class="status {{ 'complete' if user.kk_confirmed else 'incomplete' }}">
                     {{ '✔ Sudah dikonfirmasi' if user.kk_confirmed else '✘ Belum dikonfirmasi' }}
+                </span>
+            </div>
+            <div class="checklist-item">
+                <span>Pembayaran</span>
+                <span class="status {{ 'complete' if user.payment_status == 'Approved' else 'incomplete' }}">
+                    {% if user.payment_status == 'Approved' %}
+                        ✔ Sudah dikonfirmasi
+                    {% elif user.payment_status == 'Pending' %}
+                        ✘ Menunggu konfirmasi
+                    {% else %}
+                        ✘ Belum ada pembayaran
+                    {% endif %}
                 </span>
             </div>
         </div>
