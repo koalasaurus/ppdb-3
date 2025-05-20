@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -326,6 +327,55 @@ def payment(user_id):
                 return redirect(url_for('payment', user_id=user_id))
 
     return render_template('payment.html', user=user)
+
+@app.route('/admin_report')
+def admin_report():
+    if 'admin_id' not in session:
+        flash('Anda harus login sebagai admin untuk mengakses halaman ini.')
+        return redirect(url_for('login'))
+
+    # Hitung total users dan statistik status
+    total_users = User.query.count()
+    stats = {
+        'approved': User.query.filter_by(status='Approved').count(),
+        'rejected': User.query.filter_by(status='Rejected').count(),
+        'pending': User.query.filter_by(status='Pending').count()
+    }
+
+    # Statistik per fakultas
+    faculty_stats = []
+    faculties = ['Teknologi Informasi', 'Ekonomi & Bisnis', 'Desain & Komunikasi']
+    
+    for faculty in faculties:
+        faculty_data = {
+            'name': faculty,
+            'total': User.query.filter_by(faculty=faculty).count(),
+            'approved': User.query.filter_by(faculty=faculty, status='Approved').count(),
+            'rejected': User.query.filter_by(faculty=faculty, status='Rejected').count(),
+            'pending': User.query.filter_by(faculty=faculty, status='Pending').count()
+        }
+        faculty_stats.append(faculty_data)
+
+    # Data untuk grafik fakultas
+    faculty_data = {
+        'labels': faculties,
+        'values': [stats['total'] for stats in faculty_stats]
+    }
+
+    # Data untuk grafik agama
+    religions = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu']
+    religion_counts = [User.query.filter_by(religion=religion).count() for religion in religions]
+    religion_data = {
+        'labels': religions,
+        'values': religion_counts
+    }
+
+    return render_template('admin_report.html',
+                         total_users=total_users,
+                         stats=stats,
+                         faculty_stats=faculty_stats,
+                         faculty_data=faculty_data,
+                         religion_data=religion_data)
 
 if __name__ == '__main__':
     with app.app_context():
