@@ -103,6 +103,22 @@ def form(user_id):
         user.school = request.form['school']
         user.faculty = request.form.get('faculty')
 
+        # Perbaikan di sini: konversi birth_date ke objek date
+        birth_date_str = request.form.get('birth_date')
+        if birth_date_str:
+            try:
+                user.birth_date = datetime.strptime(birth_date_str, "%Y-%m-%d").date()
+            except ValueError:
+                user.birth_date = None
+        else:
+            user.birth_date = None
+
+        user.phone = request.form.get('phone')
+        user.gender = request.form.get('gender')
+        user.hobby = request.form.get('hobby')
+        user.parent_name = request.form.get('parent_name')
+        user.parent_job = request.form.get('parent_job')
+
         # Proses unggahan file ijazah
         if 'ijazah' in request.files:
             ijazah = request.files['ijazah']
@@ -141,9 +157,15 @@ def dashboard_user(user_id):
         bool(user.email),
         bool(user.address),
         bool(user.school),
+        bool(user.faculty),
+        bool(user.birth_date),
+        bool(user.phone),
+        bool(user.gender),
         bool(user.hobby),
         bool(user.parent_name),
         bool(user.parent_job),
+        bool(user.ijazah),
+        bool(user.kk),
         bool(user.ijazah_confirmed),
         bool(user.kk_confirmed),
         user.payment_status == 'Approved'

@@ -3,21 +3,218 @@
 <head>
     <title>Pembayaran</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/form.css') }}">
+    <style>
+        .bca-card {
+            width: 370px;
+            height: 220px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #232323 60%, #444 100%);
+            box-shadow: 0 10px 32px 0 rgba(0,0,0,0.28), 0 2px 8px 0 #00000022;
+            color: #fff;
+            padding: 28px 32px 24px 32px;
+            margin: 0 auto 32px auto;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            z-index: 1;
+            transition: box-shadow 0.3s;
+        }
+        .bca-card:hover {
+            box-shadow: 0 18px 48px 0 rgba(0,0,0,0.38), 0 4px 16px 0 #00000033;
+        }
+        .bca-card-bg {
+            position: absolute;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 30% 30%, #555 0%, #232323 80%);
+            opacity: 0.22;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .bca-card .bca-logo {
+            position: absolute;
+            top: 22px;
+            left: 32px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+        .bca-card .bca-logo img {
+            height: 32px;
+            margin-right: 10px;
+            filter: drop-shadow(0 1px 2px #0008);
+        }
+        .bca-card .bca-logo span {
+            font-size: 1.3rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 4px #0008;
+        }
+        .bca-card .chip {
+            width: 44px;
+            height: 32px;
+            background: linear-gradient(135deg, #e0e0e0 60%, #b0b0b0 100%);
+            border-radius: 8px;
+            margin-top: 60px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px #0004;
+            z-index: 2;
+        }
+        .bca-card .card-type {
+            position: absolute;
+            top: 22px;
+            right: 32px;
+            text-align: right;
+            z-index: 2;
+        }
+        .bca-card .card-type .type {
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 4px #0008;
+        }
+        .bca-card .card-type .titanium {
+            font-size: 0.9rem;
+            color: #ccc;
+            text-shadow: 0 1px 4px #0008;
+        }
+        .bca-card .contactless {
+            position: absolute;
+            top: 60px;
+            right: 38px;
+            font-size: 1.6rem;
+            color: #fff;
+            opacity: 0.8;
+            z-index: 2;
+        }
+        .bca-card .card-number {
+            letter-spacing: 3px;
+            font-size: 1.3rem;
+            margin: 18px 0 12px 0;
+            font-family: 'OCR A Std', 'Consolas', monospace;
+            text-shadow: 0 1px 6px #000a;
+            z-index: 2;
+        }
+        .bca-card .card-valid {
+            font-size: 0.9rem;
+            margin-top: 4px;
+            display: inline-block;
+            margin-right: 24px;
+            text-shadow: 0 1px 4px #0008;
+            z-index: 2;
+        }
+        .bca-card .card-name {
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-top: 12px;
+            font-weight: bold;
+            text-shadow: 0 1px 4px #0008;
+            z-index: 2;
+        }
+        .bca-card .mastercard {
+            position: absolute;
+            bottom: 22px;
+            right: 32px;
+            width: 48px;
+            height: 48px;
+            z-index: 2;
+            filter: drop-shadow(0 1px 4px #0008);
+        }
+        .copy-btn {
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 4px 12px;
+            margin-left: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .copy-btn:hover {
+            background: #5be9b9;
+            color: #222;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Pembayaran</h1>
+        
+        <!-- Card Bank BCA Mirip Gambar Asli -->
+        <div class="bca-card">
+            <div class="bca-card-bg"></div>
+            <div class="bca-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/BCA_logo.png" alt="BCA">
+                <span>BCA</span>
+            </div>
+            <div class="card-type">
+                <div class="type">BLACK</div>
+                <div class="titanium">titanium</div>
+            </div>
+            <div class="chip"></div>
+            <div class="contactless">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 12C7 9.79086 8.79086 8 11 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M11 16C13.2091 16 15 14.2091 15 12" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M17 12C17 7.58172 13.4183 4 9 4" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+            </div>
+            <div class="card-number" id="rekeningNumber">5432 4802 3456 7888</div>
+            <div>
+                <span class="card-valid">12/23</span>
+                <span class="card-name">Universitas Sanjaya</span>
+            </div>
+            <img class="mastercard" src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard">
+        </div>
+
         <p>Silakan transfer ke rekening berikut:</p>
         <ul>
-            <li><strong>Bank:</strong> Bank ABC</li>
-            <li><strong>No Rekening:</strong> 1234567890</li>
-            <li><strong>Atas Nama:</strong> PPDB Sekolah</li>
+            <li><strong>Bank:</strong> BCA</li>
+            <li>
+                <strong>No Rekening:</strong> 
+                <span id="rekeningText">5432 4802 3456 7888</span>
+                <button class="copy-btn" onclick="copyRekening()">Salin</button>
+            </li>
+            <li><strong>Atas Nama:</strong> Universitas Sanjaya</li>
         </ul>
         <form method="POST" enctype="multipart/form-data">
+            <label for="nominal">Pilih Nominal Pembayaran:</label>
+            <select id="nominal" name="nominal" required>
+                <option value="">-- Pilih Nominal --</option>
+                <option value="100000">Rp 100.000</option>
+                <option value="150000">Rp 150.000</option>
+                <option value="200000">Rp 200.000</option>
+                <option value="250000">Rp 250.000</option>
+                <option value="custom">Nominal Lainnya</option>
+            </select>
+            <input type="number" id="custom_nominal" name="custom_nominal" placeholder="Masukkan nominal lain" style="display:none; margin-top:10px;" min="1">
+
             <label for="payment_proof">Unggah Bukti Pembayaran:</label>
             <input type="file" id="payment_proof" name="payment_proof" accept="image/*" required><br>
             <button type="submit">Kirim Bukti Pembayaran</button>
         </form>
     </div>
+    <script>
+        // Tampilkan input nominal custom jika dipilih
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('nominal').addEventListener('change', function() {
+                var custom = document.getElementById('custom_nominal');
+                if(this.value === 'custom') {
+                    custom.style.display = 'block';
+                    custom.required = true;
+                } else {
+                    custom.style.display = 'none';
+                    custom.required = false;
+                }
+            });
+        });
+
+        // Fungsi salin nomor rekening
+        function copyRekening() {
+            var text = document.getElementById('rekeningText').innerText;
+            navigator.clipboard.writeText(text);
+            alert('Nomor rekening berhasil disalin!');
+        }
+    </script>
 </body>
 </html>

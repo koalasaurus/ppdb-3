@@ -170,3 +170,183 @@ button[type="submit"]:hover {
     color: #e63946;
     font-weight: 600;
 }
+
+/* Circular Progress Bar */
+.circular-progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 32px 0 24px 0;
+}
+.circular-progress {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px rgba(108,99,255,0.10), 0 1.5px 8px #5be9b933;
+    transition: background 0.5s;
+    overflow: visible;
+}
+.circular-progress::before {
+    content: '';
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    background: #fff;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    box-shadow: 0 2px 8px rgba(108,99,255,0.04);
+}
+.progress-value {
+    position: absolute;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #6c63ff;
+    left: 0; right: 0; top: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    text-shadow: 0 1px 8px #e0e7ff88;
+}
+.progress-label-circular {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    color: #6c63ff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Notifikasi */
+.notification {
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.notification.success {
+    background-color: rgba(82, 183, 136, 0.9); /* Hijau transparan */
+    color: white;
+}
+.notification.error {
+    background-color: rgba(230, 57, 70, 0.9); /* Merah transparan */
+    color: white;
+}
+.notification .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+.notification .close-btn:hover {
+    color: #ddd;
+}
+
+/* Progress Bar (linear) */
+.progress-container {
+    margin: 20px 0;
+    background-color: #f1f1f1; /* Abu-abu terang */
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+    width: 100%;
+}
+.progress-bar {
+    height: 100%;
+    background-color: #52b788; /* Hijau */
+    width: 0%; /* Akan diatur inline oleh template */
+    transition: width 0.3s ease;
+}
+.progress-label {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Checklist */
+.checklist {
+    margin-top: 20px;
+}
+.checklist-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.checklist-item span {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+}
+.checklist-item .status {
+    font-size: 14px;
+    color: #0077b6; /* Biru */
+}
+.checklist-item .status.complete {
+    color: #52b788; /* Hijau */
+}
+.checklist-item .status.incomplete {
+    color: #e63946; /* Merah */
+}
+
+/* Circular Progress Bar (sudah ada di user.css, pastikan tidak dobel) */
+
+/* Tombol Payment & Formulir */
+.btn-payment {
+    background-color: #7e8ff7 !important;
+    color: #fff !important;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 12px rgba(108,99,255,0.10);
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+.btn-payment:hover {
+    background-color: #5be9b9;
+    color: #222;
+}
+.btn-formulir {
+    background-color: #b3b8e7 !important;
+    color: #333 !important;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 12px rgba(108,99,255,0.10);
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+.btn-formulir:hover {
+    background-color: #5be9b9;
+    color: #222;
+}
