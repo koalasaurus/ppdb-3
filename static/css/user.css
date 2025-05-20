@@ -350,3 +350,175 @@ button[type="submit"]:hover {
     background-color: #5be9b9;
     color: #222;
 }
+
+/* --- Tambahan/penyesuaian dari styles.css untuk navbar & sidebar dashboard user --- */
+
+/* Navbar tetap di atas */
+.navbar {
+    position: fixed;
+    /* Tidak fixed, agar ikut scroll */
+    width: 100vw;
+    height: 64px;
+    z-index: 200;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    background-color: #0077b6;
+    padding: 12px 30px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Navbar Brand Highlight */
+.highlight-navbar-title {
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #6c63ff 40%, #5be9b9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    text-shadow: 0 4px 24px #6c63ff22, 0 2px 8px #5be9b955;
+    padding: 4px 24px;
+    border-radius: 18px;
+    display: inline-block;
+    transition: box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 2px 24px 0 #5be9b922;
+}
+.highlight-navbar-title i {
+    color: #6c63ff;
+    font-size: 2.2rem;
+    vertical-align: middle;
+    margin-right: 12px;
+    filter: drop-shadow(0 1px 4px #5be9b955);
+}
+.uni-highlight {
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #5be9b9 10%, #6c63ff 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    text-shadow: 0 2px 12px #5be9b955;
+}
+@media (max-width: 600px) {
+    .highlight-navbar-title {
+        font-size: 1.2rem;
+        padding: 2px 8px;
+    }
+    .highlight-navbar-title i {
+        font-size: 1.4rem;
+        margin-right: 6px;
+    }
+}
+
+/* Sidebar mulai di bawah navbar */
+#sidebar {
+    position: fixed;
+    top: 64px; /* setara tinggi navbar */
+    left: 0;
+    height: calc(100vh - 64px);
+    width: 220px;
+    z-index: 100;
+    background: #fff;
+    box-shadow: 0 0 16px rgba(0,0,0,0.04);
+    border-right: 1.5px solid #e0e7ff;
+    padding-top: 18px;
+    overflow-y: auto;
+}
+#sidebar .sidebar-header {
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #6c63ff;
+    text-align: center;
+    margin-bottom: 22px;
+    letter-spacing: 1px;
+}
+#sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 32px;
+    color: #333;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    border-left: 4px solid transparent;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+#sidebar .nav-link.active,
+#sidebar .nav-link:hover {
+    background: linear-gradient(90deg, #e0e7ff 0%, #f3f7ff 100%);
+    color: #6c63ff;
+    border-left: 4px solid #6c63ff;
+}
+#sidebar .nav-link i {
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+/* Konten utama bergeser ke kanan dan ke bawah */
+.flex-grow-1 {
+    margin-left: 220px;
+    padding-top: 84px; /* Tambahkan padding lebih besar dari tinggi navbar */
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 900px) {
+    .flex-grow-1 {
+        margin-left: 0;
+        padding-top: 76px;
+    }
+    
+    #sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* Navbar */
+.custom-navbar {
+    position: fixed !important; /* Tambahkan !important */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    z-index: 1000;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* Sesuaikan main content */
+.flex-grow-1 {
+    margin-left: 220px;
+    padding-top: 84px; /* Pastikan padding-top lebih besar dari tinggi navbar */
+}
+
+/* Sesuaikan sidebar */
+#sidebar {
+    position: fixed;
+    top: 64px; /* Sesuaikan dengan tinggi navbar */
+    left: 0;
+    height: calc(100vh - 64px);
+    width: 220px;
+    z-index: 100;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 900px) {
+    .flex-grow-1 {
+        margin-left: 0;
+        padding-top: 76px;
+    }
+    
+    #sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+    }
+}

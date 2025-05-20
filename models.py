@@ -28,6 +28,7 @@ class User(db.Model):
     is_action_taken = db.Column(db.Boolean, default=False)  # True jika admin sudah mengambil tindakan
     is_payment_action_taken = db.Column(db.Boolean, default=False)  # True jika admin sudah mengambil tindakan pada pembayaran
     faculty = db.Column(db.String(100))  # Fakultas pilihan user
+    religion = db.Column(db.String(30))  # Tambahkan ini
 
 # Model untuk Admin
 class Admin(db.Model):

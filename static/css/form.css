@@ -7,74 +7,105 @@ body {
 }
 
 .container {
-    max-width: 800px;
-    margin: 50px auto;
+    max-width: 520px;
+    margin: 48px auto;
     background: #fff;
-    padding: 30px;
+    padding: 36px 32px 32px 32px;
     border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(108,99,255,0.08);
+    box-shadow: 0 6px 32px rgba(108,99,255,0.10);
 }
 
 h1 {
     color: #6c63ff;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px;
 }
 
 label {
-    font-size: 16px;
-    color: #555; /* Abu-abu gelap */
+    font-size: 15px;
+    color: #444;
+    font-weight: 600;
+    margin-bottom: 4px;
 }
 
 input, select, button {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    padding: 10px 14px;
+    border: 1.5px solid #e0e7ff;
+    border-radius: 8px;
+    background-color: #f9f9ff;
     color: #333;
-    font-size: 16px;
-}
-
-input[type="text"]:focus, input[type="email"]:focus, input[type="date"]:focus, input[type="tel"]:focus, select:focus {
-    outline: none;
-    border-color: #0077b6; /* Biru */
-    background-color: #ffffff;
-}
-
-button {
-    background-color: #6c63ff;
-    border-radius: 30px;
+    font-size: 15px;
     font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    box-shadow: 0 2px 12px rgba(108,99,255,0.10);
-    transition: background 0.2s, color 0.2s;
+    transition: border 0.2s, box-shadow 0.2s;
 }
 
-button:hover {
-    background-color: #5be9b9;
-    color: #222;
+input[type="file"] {
+    padding: 6px 0;
+    background: none;
+    border: none;
 }
 
-button:active {
-    background-color: #2d6a4f;
-}
-
-select {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
+input:focus, select:focus {
+    outline: none;
+    border-color: #6c63ff;
+    background-color: #fff;
+    box-shadow: 0 2px 8px #6c63ff22;
 }
 
 input::placeholder {
     color: #aaa;
+    font-size: 14px;
+}
+
+button {
+    background: linear-gradient(90deg, #6c63ff 60%, #5be9b9 100%);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1.08rem;
+    box-shadow: 0 2px 12px rgba(108,99,255,0.10);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+    padding: 12px 0;
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #5be9b9 0%, #6c63ff 100%);
+    color: #222;
+    box-shadow: 0 4px 18px rgba(91,233,185,0.18);
+    transform: translateY(-2px) scale(1.04);
+}
+
+select {
+    background-color: #fff;
+    border: 1.5px solid #e0e7ff;
 }
 
 input[readonly], select[disabled] {
     background-color: #f1f1f1;
     cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 18px 6px;
+    }
+    h1 {
+        font-size: 1.3rem;
+    }
+    input, select, button {
+        font-size: 14px;
+    }
 }

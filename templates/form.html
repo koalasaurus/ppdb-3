@@ -56,6 +56,18 @@
                 <option value="Desain & Komunikasi" {% if user.faculty == 'Desain & Komunikasi' %}selected{% endif %}>Desain & Komunikasi</option>
             </select><br>
 
+            <label for="religion">Agama:</label>
+            <select id="religion" name="religion" required>
+                <option value="" disabled selected>Pilih Agama</option>
+                <option value="Islam" {% if user.religion == 'Islam' %}selected{% endif %}>Islam</option>
+                <option value="Kristen" {% if user.religion == 'Kristen' %}selected{% endif %}>Kristen</option>
+                <option value="Katolik" {% if user.religion == 'Katolik' %}selected{% endif %}>Katolik</option>
+                <option value="Hindu" {% if user.religion == 'Hindu' %}selected{% endif %}>Hindu</option>
+                <option value="Buddha" {% if user.religion == 'Buddha' %}selected{% endif %}>Buddha</option>
+                <option value="Konghucu" {% if user.religion == 'Konghucu' %}selected{% endif %}>Konghucu</option>
+                <option value="Lainnya" {% if user.religion == 'Lainnya' %}selected{% endif %}>Lainnya</option>
+            </select><br>
+
             <button type="submit">Simpan</button>
         </form>
     </div>

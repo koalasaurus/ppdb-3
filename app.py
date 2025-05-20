@@ -118,6 +118,7 @@ def form(user_id):
         user.hobby = request.form.get('hobby')
         user.parent_name = request.form.get('parent_name')
         user.parent_job = request.form.get('parent_job')
+        user.religion = request.form.get('religion')
 
         # Proses unggahan file ijazah
         if 'ijazah' in request.files:
@@ -161,6 +162,7 @@ def dashboard_user(user_id):
         bool(user.birth_date),
         bool(user.phone),
         bool(user.gender),
+        bool(user.religion),  # <--- Tambahkan baris ini
         bool(user.hobby),
         bool(user.parent_name),
         bool(user.parent_job),

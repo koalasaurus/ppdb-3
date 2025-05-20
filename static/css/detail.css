@@ -11,49 +11,84 @@ body {
     max-width: 800px;
     margin: 50px auto;
     background: #fff;
-    padding: 30px;
+    padding: 36px 32px 32px 32px;
     border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(108,99,255,0.08);
+    box-shadow: 0 6px 32px rgba(108,99,255,0.10);
 }
 
 /* Heading */
 .container h1 {
-    font-size: 28px;
+    font-size: 2rem;
     color: #6c63ff;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
     text-align: center;
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 
-/* Detail Labels */
-.container p {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #555; /* Abu-abu gelap */
+/* Section Title */
+.section-title {
+    font-size: 1.3rem;
+    color: #5be9b9;
+    margin: 32px 0 18px 0;
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
-.container strong {
-    color: #333; /* Warna teks utama */
+/* Table Data */
+.user-detail-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-bottom: 32px;
+}
+.user-detail-table th, .user-detail-table td {
+    padding: 10px 14px;
+    font-size: 15px;
+}
+.user-detail-table th {
+    text-align: left;
+    color: #6c63ff;
+    font-weight: 700;
+    width: 220px;
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    background: none;
+}
+.user-detail-table td {
+    background: #f7f8fd;
+    border-radius: 8px;
+    color: #333;
+    font-family: 'Inter', Arial, sans-serif;
+}
+.user-detail-table tr {
+    box-shadow: 0 2px 8px #6c63ff0a;
 }
 
-/* Back Button */
+/* Back Button & Action Buttons */
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #6c63ff;
+    background: linear-gradient(90deg, #6c63ff 60%, #5be9b9 100%);
     color: #fff;
     text-decoration: none;
     border-radius: 30px;
     font-size: 16px;
     margin-top: 20px;
-    transition: background 0.2s, color 0.2s;
-    font-family: 'Inter', sans-serif;
+    margin-right: 8px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
     font-weight: 600;
     box-shadow: 0 2px 12px rgba(108,99,255,0.10);
+    border: none;
+    cursor: pointer;
+    min-width: 110px;
 }
-
 .btn:hover {
-    background-color: #5be9b9;
+    background: linear-gradient(90deg, #5be9b9 0%, #6c63ff 100%);
     color: #222;
+    box-shadow: 0 4px 18px rgba(91,233,185,0.18);
 }
 
 /* Status */
@@ -62,20 +97,18 @@ body {
     font-weight: bold;
     margin-left: 10px;
 }
-
 .status.complete {
     color: #5be9b9;
 }
-
 .status.incomplete {
-    color: #e63946; /* Merah */
+    color: #e63946;
 }
 
 /* Modal */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1050; /* Pastikan z-index cukup tinggi */
+    z-index: 1050;
     left: 0;
     top: 0;
     width: 100%;
@@ -83,7 +116,6 @@ body {
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
 }
-
 .modal-content {
     background-color: #fff;
     margin: 10% auto;
@@ -94,9 +126,8 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
-    z-index: 1060; /* Pastikan konten modal berada di atas */
+    z-index: 1060;
 }
-
 .modal .close {
     position: absolute;
     top: 10px;
@@ -107,9 +138,8 @@ body {
     font-weight: bold;
     color: #aaa;
     cursor: pointer;
-    z-index: 1070; /* Pastikan tombol berada di atas */
+    z-index: 1070;
 }
-
 .modal .close:hover,
 .modal .close:focus {
     color: #000;
@@ -121,7 +151,6 @@ body {
     position: relative;
     text-align: center;
 }
-
 .slider .prev,
 .slider .next {
     position: absolute;
@@ -135,16 +164,32 @@ body {
     cursor: pointer;
     border-radius: 50%;
 }
-
 .slider .prev {
     left: 10px;
 }
-
 .slider .next {
     right: 10px;
 }
-
 .slider .prev:hover,
 .slider .next:hover {
     background-color: rgba(0, 0, 0, 0.8);
+}
+#documentImage {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 14px 2px;
+    }
+    .user-detail-table th, .user-detail-table td {
+        font-size: 13px;
+        padding: 8px 6px;
+    }
+    .section-title {
+        font-size: 1.1rem;
+    }
 }

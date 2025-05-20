@@ -3,7 +3,9 @@
 <head>
     <title>Dashboard User</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
     <script>
         // Fungsi untuk menyembunyikan notifikasi
         function closeNotification() {
@@ -21,115 +23,177 @@
     </script>
 </head>
 <body>
-    <!-- Notifikasi -->
-    {% if notification %}
-    <div id="notification" class="notification {{ 'success' if 'diterima' in notification.message.lower() else 'error' }}">
-        <button class="close-btn" onclick="closeNotification()">×</button>
-        {{ notification.message }}
-    </div>
-    {% endif %}
-
-    <div class="container">
-        <h1>Dashboard User</h1>
-        <p>Selamat datang, <strong>{{ user.name }}</strong>! Berikut adalah informasi seputar PPDB dan progres pendaftaran Anda.</p>
-
-        <div class="circular-progress-container">
-            <div class="circular-progress" id="circularProgress">
-                <span class="progress-value" id="progressValue">{{ progress }}%</span>
-            </div>
-            <div class="progress-label-circular">Progres Pendaftaran</div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm custom-navbar">
+        <div class="container-fluid justify-content-center">
+            <span class="navbar-brand fw-semibold highlight-navbar-title mx-auto">
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                PPDB <span class="uni-highlight">Universitas Sanjaya</span>
+            </span>
         </div>
-
-        <h2>Checklist Pendaftaran</h2>
-        <ul class="checklist-list">
-            <li>
-                Nama
-                <span class="status {{ 'complete' if user.name else 'incomplete' }}">
-                    {{ '✔ Sudah diisi' if user.name else '✘ Belum diisi' }}
-                </span>
-            </li>
-            <li>
-                Email
-                <span class="status {{ 'complete' if user.email else 'incomplete' }}">
-                    {{ '✔ Sudah diisi' if user.email else '✘ Belum diisi' }}
-                </span>
-            </li>
-            <li>
-                Alamat
-                <span class="status {{ 'complete' if user.address else 'incomplete' }}">
-                    {{ '✔ Sudah diisi' if user.address else '✘ Belum diisi' }}
-                </span>
-            </li>
-            <li>
-                Asal Sekolah
-                <span class="status {{ 'complete' if user.school else 'incomplete' }}">
-                    {{ '✔ Sudah diisi' if user.school else '✘ Belum diisi' }}
-                </span>
-            </li>
-            <li>
-                Hobi
-                <span class="status {{ 'complete' if user.hobby else 'incomplete' }}">
-                    {{ '✔ Sudah diisi' if user.hobby else '✘ Belum diisi' }}
-                </span>
-            </li>
-            <li>
-                Nama Orang Tua/Wali
-                <span class="status {{ 'complete' if user.parent_name else 'incomplete' }}">
-                    {{ '✔ Sudah diisi' if user.parent_name else '✘ Belum diisi' }}
-                </span>
-            </li>
-            <li>
-                Pekerjaan Orang Tua/Wali
-                <span class="status {{ 'complete' if user.parent_job else 'incomplete' }}">
-                    {{ '✔ Sudah diisi' if user.parent_job else '✘ Belum diisi' }}
-                </span>
-            </li>
-            <li>
-                Ijazah
-                <span class="status {{ 'complete' if user.ijazah_confirmed else 'incomplete' }}">
-                    {{ '✔ Sudah dikonfirmasi' if user.ijazah_confirmed else '✘ Belum dikonfirmasi' }}
-                </span>
-            </li>
-            <li>
-                Kartu Keluarga
-                <span class="status {{ 'complete' if user.kk_confirmed else 'incomplete' }}">
-                    {{ '✔ Sudah dikonfirmasi' if user.kk_confirmed else '✘ Belum dikonfirmasi' }}
-                </span>
-            </li>
-            <li>
-                Pembayaran
-                <span class="status {{ 'complete' if user.payment_status == 'Approved' else 'incomplete' }}">
-                    {% if user.payment_status == 'Approved' %}
-                        ✔ Sudah dikonfirmasi
-                    {% elif user.payment_status == 'Pending' %}
-                        ✘ Menunggu konfirmasi
-                    {% else %}
-                        ✘ Belum ada pembayaran
-                    {% endif %}
-                </span>
-            </li>
-        </ul>
-
-        <h2>Status Pembayaran</h2>
-        <p>
-            {% if user.payment_status == 'Pending' %}
-                Menunggu konfirmasi admin.
-            {% elif user.payment_status == 'Approved' %}
-                ✔ Pembayaran telah diterima.
-            {% elif user.payment_status == 'Rejected' %}
-                ✘ Pembayaran ditolak. Silakan unggah ulang bukti pembayaran.
-            {% else %}
-                Belum ada pembayaran.
+    </nav>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="bg-white shadow-sm p-3" style="min-width:220px;min-height:100vh;">
+            <div class="sidebar-header mb-4">
+                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                    <i class="bi bi-mortarboard-fill text-primary me-2"></i>
+                    <span class="fw-semibold">Sistem PPDB</span>
+                </a>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('index') }}">
+                        <i class="bi bi-house-door-fill me-2"></i> Beranda
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('dashboard_user', user_id=user.id) }}">
+                        <i class="bi bi-grid-fill me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('logout') }}">
+                        <i class="bi bi-box-arrow-right me-2"></i> Keluar
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Main Content -->
+        <div class="flex-grow-1">
+            <!-- Notifikasi -->
+            {% if notification %}
+            <div id="notification" class="notification {{ 'success' if 'diterima' in notification.message.lower() else 'error' }}">
+                <button class="close-btn" onclick="closeNotification()">×</button>
+                {{ notification.message }}
+            </div>
             {% endif %}
-        </p>
-        {% if user.payment_status == 'Rejected' or user.payment_status is none %}
-            <a href="{{ url_for('payment', user_id=user.id) }}" class="btn-payment">Unggah Bukti Pembayaran</a>
-        {% else %}
-            <a href="{{ url_for('payment', user_id=user.id) }}" class="btn-payment">Unggah Bukti Pembayaran</a>
-        {% endif %}
 
-        <h2>Aksi</h2>
-        <a href="{{ url_for('form', user_id=user.id) }}" class="btn-formulir">Isi Formulir</a>
+            <div class="container">
+                <h1>Dashboard User</h1>
+                <p>Selamat datang, <strong>{{ user.name }}</strong>! Berikut adalah informasi seputar PPDB dan progres pendaftaran Anda.</p>
+
+                <div class="circular-progress-container">
+                    <div class="circular-progress" id="circularProgress">
+                        <span class="progress-value" id="progressValue">{{ progress }}%</span>
+                    </div>
+                    <div class="progress-label-circular">Progres Pendaftaran</div>
+                </div>
+
+                <h2>Checklist Pendaftaran</h2>
+                <ul class="checklist-list">
+                    <li>
+                        Nama
+                        <span class="status {{ 'complete' if user.name else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.name else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Email
+                        <span class="status {{ 'complete' if user.email else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.email else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Alamat
+                        <span class="status {{ 'complete' if user.address else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.address else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Tanggal Lahir
+                        <span class="status {{ 'complete' if user.birth_date else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.birth_date else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Nomor Telepon
+                        <span class="status {{ 'complete' if user.phone else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.phone else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Jenis Kelamin
+                        <span class="status {{ 'complete' if user.gender else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.gender else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Agama
+                        <span class="status {{ 'complete' if user.religion else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.religion else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Asal Sekolah
+                        <span class="status {{ 'complete' if user.school else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.school else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Hobi
+                        <span class="status {{ 'complete' if user.hobby else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.hobby else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Nama Orang Tua/Wali
+                        <span class="status {{ 'complete' if user.parent_name else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.parent_name else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Pekerjaan Orang Tua/Wali
+                        <span class="status {{ 'complete' if user.parent_job else 'incomplete' }}">
+                            {{ '✔ Sudah diisi' if user.parent_job else '✘ Belum diisi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Ijazah
+                        <span class="status {{ 'complete' if user.ijazah_confirmed else 'incomplete' }}">
+                            {{ '✔ Sudah dikonfirmasi' if user.ijazah_confirmed else '✘ Belum dikonfirmasi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Kartu Keluarga
+                        <span class="status {{ 'complete' if user.kk_confirmed else 'incomplete' }}">
+                            {{ '✔ Sudah dikonfirmasi' if user.kk_confirmed else '✘ Belum dikonfirmasi' }}
+                        </span>
+                    </li>
+                    <li>
+                        Pembayaran
+                        <span class="status {{ 'complete' if user.payment_status == 'Approved' else 'incomplete' }}">
+                            {% if user.payment_status == 'Approved' %}
+                                ✔ Sudah dikonfirmasi
+                            {% elif user.payment_status == 'Pending' %}
+                                ✘ Menunggu konfirmasi
+                            {% else %}
+                                ✘ Belum ada pembayaran
+                            {% endif %}
+                        </span>
+                    </li>
+                </ul>
+
+                <h2>Status Pembayaran</h2>
+                <p>
+                    {% if user.payment_status == 'Pending' %}
+                        Menunggu konfirmasi admin.
+                    {% elif user.payment_status == 'Approved' %}
+                        ✔ Pembayaran telah diterima.
+                    {% elif user.payment_status == 'Rejected' %}
+                        ✘ Pembayaran ditolak. Silakan unggah ulang bukti pembayaran.
+                    {% else %}
+                        Belum ada pembayaran.
+                    {% endif %}
+                </p>
+                <a href="{{ url_for('payment', user_id=user.id) }}" class="btn-payment">Unggah Bukti Pembayaran</a>
+
+                <h2>Aksi</h2>
+                <a href="{{ url_for('form', user_id=user.id) }}" class="btn-formulir">Isi Formulir</a>
+            </div>
+        </div>
     </div>
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </body>
 </html>

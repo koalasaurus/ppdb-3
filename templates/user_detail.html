@@ -3,7 +3,50 @@
 <head>
     <title>Detail User</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/detail.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
+        /* Tambahan agar tabel data lebih rapi */
+        .user-detail-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            margin-bottom: 32px;
+        }
+        .user-detail-table th, .user-detail-table td {
+            padding: 10px 14px;
+            font-size: 15px;
+        }
+        .user-detail-table th {
+            text-align: left;
+            color: #6c63ff;
+            font-weight: 700;
+            width: 220px;
+            font-family: 'Poppins', 'Inter', Arial, sans-serif;
+            background: none;
+        }
+        .user-detail-table td {
+            background: #f7f8fd;
+            border-radius: 8px;
+            color: #333;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        .user-detail-table tr {
+            box-shadow: 0 2px 8px #6c63ff0a;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            color: #5be9b9;
+            margin: 32px 0 18px 0;
+            font-family: 'Poppins', 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .document-section {
+            margin-bottom: 32px;
+        }
+        .btn {
+            min-width: 110px;
+        }
         /* CSS untuk modal */
         .modal {
             display: none; /* Sembunyikan modal secara default */
@@ -75,54 +118,112 @@
             max-height: 500px;
             object-fit: contain;
         }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .user-detail-table th, .user-detail-table td {
+                font-size: 13px;
+                padding: 8px 6px;
+            }
+            .section-title {
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Detail User</h1>
-        <p><strong>Nama:</strong> {{ user.name }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Alamat:</strong> {{ user.address or 'Belum diisi' }}</p>
-        <p><strong>Asal Sekolah:</strong> {{ user.school or 'Belum diisi' }}</p>
-        <p><strong>Fakultas Pilihan:</strong> {{ user.faculty or 'Belum dipilih' }}</p>
-        <p><strong>Tanggal Lahir:</strong> {{ user.birth_date or 'Belum diisi' }}</p>
-        <p><strong>Nomor Telepon:</strong> {{ user.phone or 'Belum diisi' }}</p>
-        <p><strong>Jenis Kelamin:</strong> {{ user.gender or 'Belum diisi' }}</p>
-        <p><strong>Hobi:</strong> {{ user.hobby or 'Belum diisi' }}</p>
-        <p><strong>Nama Orang Tua/Wali:</strong> {{ user.parent_name or 'Belum diisi' }}</p>
-        <p><strong>Pekerjaan Orang Tua/Wali:</strong> {{ user.parent_job or 'Belum diisi' }}</p>
-        <p><strong>Status Pendaftaran:</strong> {{ user.status }}</p>
-        <p><strong>Waktu Pendaftaran:</strong> {{ user.created_at }}</p>
+        <table class="user-detail-table">
+            <tr>
+                <th>Nama</th>
+                <td>{{ user.name }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Alamat</th>
+                <td>{{ user.address or 'Belum diisi' }}</td>
+            </tr>
+            <tr>
+                <th>Asal Sekolah</th>
+                <td>{{ user.school or 'Belum diisi' }}</td>
+            </tr>
+            <tr>
+                <th>Fakultas Pilihan</th>
+                <td>{{ user.faculty or 'Belum dipilih' }}</td>
+            </tr>
+            <tr>
+                <th>Tanggal Lahir</th>
+                <td>{{ user.birth_date or 'Belum diisi' }}</td>
+            </tr>
+            <tr>
+                <th>Nomor Telepon</th>
+                <td>{{ user.phone or 'Belum diisi' }}</td>
+            </tr>
+            <tr>
+                <th>Jenis Kelamin</th>
+                <td>{{ user.gender or 'Belum diisi' }}</td>
+            </tr>
+            <tr>
+                <th>Agama</th>
+                <td>{{ user.religion or 'Belum diisi' }}</td>
+            </tr>
+            <tr>
+                <th>Hobi</th>
+                <td>{{ user.hobby or 'Belum diisi' }}</td>
+            </tr>
+            <tr>
+                <th>Nama Orang Tua/Wali</th>
+                <td>{{ user.parent_name or 'Belum diisi' }}</td>
+            </tr>
+            <tr>
+                <th>Pekerjaan Orang Tua/Wali</th>
+                <td>{{ user.parent_job or 'Belum diisi' }}</td>
+            </tr>
+            <tr>
+                <th>Status Pendaftaran</th>
+                <td>{{ user.status }}</td>
+            </tr>
+            <tr>
+                <th>Waktu Pendaftaran</th>
+                <td>{{ user.created_at }}</td>
+            </tr>
+        </table>
 
-        <h2>Dokumen</h2>
-        <p><strong>Ijazah:</strong> 
-            {% if user.ijazah %}
-                <button onclick="viewDocument(['{{ url_for('static', filename=user.ijazah) }}'])" class="btn btn-blue">View</button>
-                {% if not user.ijazah_confirmed %}
-                    <form method="POST" action="{{ url_for('confirm_documents', user_id=user.id) }}" style="display: inline;">
-                        <button type="submit" name="document" value="ijazah" class="btn btn-green">Konfirmasi Ijazah</button>
-                    </form>
+        <div class="document-section">
+            <div class="section-title">Dokumen</div>
+            <p><strong>Ijazah:</strong>
+                {% if user.ijazah %}
+                    <button onclick="viewDocument(['{{ url_for('static', filename=user.ijazah) }}'])" class="btn btn-blue">View</button>
+                    {% if not user.ijazah_confirmed %}
+                        <form method="POST" action="{{ url_for('confirm_documents', user_id=user.id) }}" style="display: inline;">
+                            <button type="submit" name="document" value="ijazah" class="btn btn-green">Konfirmasi Ijazah</button>
+                        </form>
+                    {% else %}
+                        <span class="status complete">✔ Sudah dikonfirmasi</span>
+                    {% endif %}
                 {% else %}
-                    <span class="status complete">✔ Sudah dikonfirmasi</span>
+                    Belum diunggah
                 {% endif %}
-            {% else %}
-                Belum diunggah
-            {% endif %}
-        </p>
-        <p><strong>Kartu Keluarga:</strong> 
-            {% if user.kk %}
-                <button onclick="viewDocument(['{{ url_for('static', filename=user.kk) }}'])" class="btn btn-blue">View</button>
-                {% if not user.kk_confirmed %}
-                    <form method="POST" action="{{ url_for('confirm_documents', user_id=user.id) }}" style="display: inline;">
-                        <button type="submit" name="document" value="kk" class="btn btn-green">Konfirmasi KK</button>
-                    </form>
+            </p>
+            <p><strong>Kartu Keluarga:</strong>
+                {% if user.kk %}
+                    <button onclick="viewDocument(['{{ url_for('static', filename=user.kk) }}'])" class="btn btn-blue">View</button>
+                    {% if not user.kk_confirmed %}
+                        <form method="POST" action="{{ url_for('confirm_documents', user_id=user.id) }}" style="display: inline;">
+                            <button type="submit" name="document" value="kk" class="btn btn-green">Konfirmasi KK</button>
+                        </form>
+                    {% else %}
+                        <span class="status complete">✔ Sudah dikonfirmasi</span>
+                    {% endif %}
                 {% else %}
-                    <span class="status complete">✔ Sudah dikonfirmasi</span>
+                    Belum diunggah
                 {% endif %}
-            {% else %}
-                Belum diunggah
-            {% endif %}
-        </p>
+            </p>
+        </div>
 
         <a href="{{ url_for('dashboard_admin') }}" class="btn btn-blue">Kembali ke Dashboard Admin</a>
     </div>
