@@ -1,85 +1,108 @@
-# PPDB Application
-
-## Author
-Andika
+# PPDB Universitas Sanjaya
 
 ## Description
-Aplikasi PPDB (Penerimaan Peserta Didik Baru) adalah aplikasi berbasis web yang dirancang untuk mempermudah proses pendaftaran siswa baru. Aplikasi ini memiliki fitur seperti registrasi, login, pengisian formulir pendaftaran, dashboard user untuk melihat status pendaftaran, dan dashboard admin untuk mengelola data pendaftaran.
+Aplikasi PPDB (Penerimaan Peserta Didik Baru) Universitas Sanjaya adalah sistem berbasis web yang dirancang untuk memudahkan proses pendaftaran mahasiswa baru. Aplikasi ini menyediakan fitur lengkap dari pendaftaran hingga pembayaran dan manajemen admin.
 
 ## Features
-- **Homepage**: Menampilkan informasi cara pendaftaran.
-- **Register & Login**: User dapat mendaftar dan login untuk mengakses dashboard.
-- **Formulir Pendaftaran**: User dapat mengisi formulir pendaftaran.
-- **Dashboard User**: Menampilkan profil user, status pendaftaran, dan notifikasi.
-- **Dashboard Admin**: Admin dapat melihat data pendaftaran, menyetujui, atau menolak pendaftaran.
-- **Notifikasi**: 
-  - Untuk admin jika ada formulir baru.
-  - Untuk user jika pendaftaran diterima atau ditolak.
+- **Authentication**
+  - Register akun baru
+  - Login user & admin
+  - Logout
+
+- **User Dashboard**
+  - Progress tracker pendaftaran
+  - Form pengisian data pribadi
+  - Upload dokumen (Ijazah & KK)
+  - Pembayaran dengan bukti transfer
+  - Status verifikasi dokumen & pembayaran
+
+- **Admin Dashboard**
+  - Manajemen data pendaftar
+  - Verifikasi dokumen
+  - Konfirmasi pembayaran
+  - Laporan statistik pendaftaran
 
 ## Project Structure
 ```plaintext
-ppdb-app/
-├── app.py                  # File utama aplikasi Flask
-├── models.py               # Model database untuk User, Admin, dan Notifikasi
-├── templates/              # Folder untuk file HTML
-│   ├── index.html          # Homepage
-│   ├── register.html       # Halaman register
-│   ├── login.html          # Halaman login
-│   ├── form.html           # Formulir pendaftaran
-│   ├── dashboard_user.html # Dashboard user
-│   ├── dashboard_admin.html# Dashboard admin
-│   └── user_detail.html    # Halaman detail user untuk admin
-├── static/                 # Folder untuk file CSS, JS, dan gambar
+ppdb3/
+├── static/
 │   ├── css/
-│   │   ├── styles.css      # File CSS utama
-│   │   ├── form.css        # File CSS untuk formulir
-│   │   ├── admin.css       # File CSS untuk dashboard admin
-│   │   └── detail.css      # File CSS untuk halaman detail user
-│   └── js/
-│       └── scripts.js      # File JavaScript
-├── db.sqlite3              # Database SQLite
-└── README.md               # Dokumentasi proyek
+│   │   ├── admin.css
+│   │   ├── detail.css
+│   │   ├── form.css
+│   │   ├── login.css
+│   │   ├── register.css
+│   │   ├── styles.css
+│   │   └── user.css
+│   ├── js/
+│   │   └── scripts.js
+│   └── img/
+│       ├── Logo-Bank-BCA-1.png
+│       └── mastercard.png
+├── templates/
+│   ├── admin_report.html
+│   ├── dashboard_admin.html
+│   ├── dashboard_user.html
+│   ├── form.html
+│   ├── index.html
+│   ├── login.html
+│   ├── payment.html
+│   ├── register.html
+│   └── user_detail.html
+├── app.py
+├── models.py
+└── README.md
 ```
 
-## How to Run
-1. **Clone Repository**:
-   ```bash
-   git clone <repository-url>
-   cd ppdb-app
-   ```
+## Tech Stack
+- **Backend**: Python Flask
+- **Database**: SQLite dengan SQLAlchemy
+- **Frontend**: HTML, CSS, JavaScript
+- **UI Framework**: Bootstrap 5
+- **Icons**: Bootstrap Icons
 
-2. **Install Dependencies**:
-   Pastikan Anda memiliki Python terinstal. Kemudian jalankan:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Installation & Setup
 
-3. **Setup Database**:
-   Inisialisasi database dengan perintah berikut:
-   ```bash
-   flask db init
-   flask db migrate
-   flask db upgrade
-   ```
+1. **Clone Repository**
+```bash
+git clone [repository-url]
+cd ppdb3
+```
 
-4. **Run Application**:
-   Jalankan aplikasi dengan perintah:
-   ```bash
-   flask run
-   ```
-   Aplikasi akan berjalan di `http://127.0.0.1:5000`.
+2. **Install Dependencies**
+```bash
+pip install flask flask-sqlalchemy flask-migrate flask-login werkzeug
+```
 
-5. **Access Application**:
-   - **Homepage**: `http://127.0.0.1:5000/`
-   - **Admin Dashboard**: `http://127.0.0.1:5000/dashboard_admin`
-   - **User Dashboard**: `http://127.0.0.1:5000/dashboard_user/<user_id>`
+3. **Initialize Database**
+```bash
+flask db init
+flask db migrate
+flask db upgrade
+```
 
-## Dependencies
-- Flask
-- Flask-SQLAlchemy
-- Flask-Migrate
-- Flask-Login
-- Werkzeug
+4. **Run Application**
+```bash
+python app.py
+```
+
+5. **Default Admin Account**
+- Email: admin@gmail.com
+- Password: admin123
+
+## Pages & Routes
+- `/` - Homepage
+- `/login` - Login page
+- `/register` - Registration page
+- `/dashboard_user/<user_id>` - User dashboard
+- `/dashboard_admin` - Admin dashboard
+- `/form/<user_id>` - Form pendaftaran
+- `/payment/<user_id>` - Halaman pembayaran
+- `/user_detail/<user_id>` - Detail pendaftar (admin only)
+- `/admin_report` - Laporan statistik (admin only)
+
+## Contributors
+- Andika - Developer
 
 ## License
-Proyek ini menggunakan lisensi **MIT**.
+MIT License
