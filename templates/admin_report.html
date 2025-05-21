@@ -6,30 +6,231 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* Basic styling dari dashboard_admin */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        /* Copy navbar & sidebar style dari dashboard_admin */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 64px;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .navbar-brand-highlight {
+            font-family: 'Poppins', 'Inter', Arial, sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #6c63ff 40%, #5be9b9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-shadow: 0 4px 24px #6c63ff22, 0 2px 8px #5be9b955;
+            padding: 4px 24px;
+            border-radius: 18px;
+            display: inline-block;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            width: 220px;
+            height: calc(100vh - 64px);
+            background: #fff;
+            border-right: 1.5px solid #e0e7ff;
+            box-shadow: 0 0 16px rgba(0,0,0,0.04);
+            padding: 24px 0 0 0;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar .sidebar-header {
+            font-family: 'Poppins', 'Inter', Arial, sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #6c63ff;
+            text-align: center;
+            margin-bottom: 22px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 32px;
+            color: #333;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            border-left: 4px solid transparent;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: linear-gradient(90deg, #e0e7ff 0%, #f3f7ff 100%);
+            color: #6c63ff;
+            border-left: 4px solid #6c63ff;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar .logout-link {
+            margin-top: auto;
+            color: #e63946;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar .logout-link:hover {
+            background: #ffeaea;
+            color: #e63946;
+            border-left: 4px solid #e63946;
+        }
+
+        /* Main content shift */
+        .admin-main-content {
+            margin-left: 220px;
+            padding-top: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                box-shadow: none;
+            }
+
+            .admin-main-content {
+                margin-left: 0;
+                padding-top: 80px;
+            }
+        }
+
+        /* Improved Report Cards */
         .report-card {
             background: #fff;
             border-radius: 15px;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 20px;
             box-shadow: 0 4px 24px rgba(108,99,255,0.08);
+            transition: all 0.3s ease;
         }
         
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 32px rgba(108,99,255,0.12);
+        }
+        
+        /* Statistics Styling */
         .stats-number {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 2.5rem;
+            font-weight: 800;
             color: #6c63ff;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #6c63ff 0%, #5be9b9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .stats-label {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
+        /* Chart Container */
         .chart-container {
             position: relative;
             margin: auto;
-            height: 300px;
+            height: 350px;
             width: 100%;
+            padding: 20px;
+        }
+        
+        /* Chart Headers */
+        .report-card h4 {
+            color: #333;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Table Styling */
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 15px;
+        }
+        
+        .table thead th {
+            background: #f8f9ff;
+            font-weight: 600;
+            padding: 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6c63ff;
+            border-bottom: 2px solid #e0e7ff;
+        }
+        
+        .table tbody td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 1rem;
+            color: #444;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f8f9ff;
+        }
+        
+        /* Responsive Design for Charts */
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+            
+            .stats-number {
+                font-size: 2rem;
+            }
+            
+            .stats-label {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -41,6 +242,13 @@
         <a href="{{ url_for('dashboard_admin') }}" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a href="{{ url_for('admin_report') }}" class="nav-link active"><i class="bi bi-file-text-fill"></i> Laporan</a>
         <a href="{{ url_for('logout') }}" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </nav>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <span class="navbar-brand-highlight">
+            Universitas Sanjaya
+        </span>
     </nav>
 
     <div class="admin-main-content">
@@ -135,6 +343,12 @@
         const facultyData = {{ faculty_data | tojson }};
         const religionData = {{ religion_data | tojson }};
 
+        // Fungsi untuk menghitung persentase
+        function calculatePercentages(data) {
+            const total = data.reduce((a, b) => a + b, 0);
+            return data.map(value => ((value / total) * 100).toFixed(1));
+        }
+
         // Buat grafik fakultas
         new Chart(document.getElementById('facultyChart'), {
             type: 'pie',
@@ -147,12 +361,67 @@
                         '#5be9b9',
                         '#ffd166',
                         '#ef476f'
-                    ]
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 12,
+                                family: "'Segoe UI', sans-serif",
+                                weight: '600'
+                            },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                const percentages = calculatePercentages(data.datasets[0].data);
+                                return data.labels.map((label, i) => ({
+                                    text: `${label} (${percentages[i]}%)`,
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    hidden: false,
+                                    index: i
+                                }));
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        },
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        titleColor: '#333',
+                        titleFont: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        bodyColor: '#666',
+                        bodyFont: {
+                            size: 13
+                        },
+                        borderColor: '#e0e7ff',
+                        borderWidth: 1,
+                        padding: 12,
+                        boxPadding: 6,
+                        usePointStyle: true
+                    }
+                }
             }
         });
 
-        // Buat grafik agama
+        // Buat grafik agama dengan style yang sama
         new Chart(document.getElementById('religionChart'), {
             type: 'pie',
             data: {
@@ -166,8 +435,63 @@
                         '#ef476f',
                         '#118ab2',
                         '#073b4c'
-                    ]
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 12,
+                                family: "'Segoe UI', sans-serif",
+                                weight: '600'
+                            },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                const percentages = calculatePercentages(data.datasets[0].data);
+                                return data.labels.map((label, i) => ({
+                                    text: `${label} (${percentages[i]}%)`,
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    hidden: false,
+                                    index: i
+                                }));
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        },
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        titleColor: '#333',
+                        titleFont: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        bodyColor: '#666',
+                        bodyFont: {
+                            size: 13
+                        },
+                        borderColor: '#e0e7ff',
+                        borderWidth: 1,
+                        padding: 12,
+                        boxPadding: 6,
+                        usePointStyle: true
+                    }
+                }
             }
         });
     </script>
