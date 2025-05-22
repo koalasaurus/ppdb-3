@@ -113,7 +113,7 @@ Berikut adalah beberapa tampilan antarmuka aplikasi PPDB Universitas Sanjaya:
 
 | Homepage | Homepage | Homepage |
 |----------|----------|----------|
-| ![](static/img/Screenshot%20(46).png) | ![](static/img/Screenshot%20(47).png) | ![](static/img/Screenshot%20(48).png) |
+| ![homepage](static/img/Screenshot%20(46).png) | ![](static/img/Screenshot%20(47).png) | ![](static/img/Screenshot%20(48).png) |
 | Homepage | Homepage | Homepage |
 | ![](static/img/Screenshot%20(49).png) | ![](static/img/Screenshot%20(50).png) | ![](static/img/Screenshot%20(51).png) |
 
