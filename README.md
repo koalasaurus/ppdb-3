@@ -111,32 +111,38 @@ MIT License
 
 Berikut adalah beberapa tampilan antarmuka aplikasi PPDB Universitas Sanjaya:
 
-| Login | Register | Dashboard User |
-|-------|----------|---------------|
+| Homepage | Homepage | Homepage |
+|----------|----------|----------|
 | ![](static/img/Screenshot%20(46).png) | ![](static/img/Screenshot%20(47).png) | ![](static/img/Screenshot%20(48).png) |
-
-| Formulir Pendaftaran | Upload Dokumen | Dashboard Admin |
-|----------------------|---------------|----------------|
+| Homepage | Homepage | Homepage |
 | ![](static/img/Screenshot%20(49).png) | ![](static/img/Screenshot%20(50).png) | ![](static/img/Screenshot%20(51).png) |
 
-| Detail User | Laporan Admin | Bukti Pembayaran |
-|-------------|--------------|------------------|
-| ![](static/img/Screenshot%20(52).png) | ![](static/img/Screenshot%20(53).png) | ![](static/img/Screenshot%20(54).png) |
+| Register | Login |
+|----------|-------|
+| ![](static/img/Screenshot%20(52).png) | ![](static/img/Screenshot%20(53).png) |
 
-| Notifikasi | Progress Tracker | Sidebar |
-|------------|-----------------|---------|
-| ![](static/img/Screenshot%20(55).png) | ![](static/img/Screenshot%20(56).png) | ![](static/img/Screenshot%20(57).png) |
+| Halaman Admin | Halaman Admin | Halaman Admin |
+|---------------|---------------|---------------|
+| ![](static/img/Screenshot%20(54).png) | ![](static/img/Screenshot%20(55).png) | ![](static/img/Screenshot%20(56).png) |
 
-| Modal Konfirmasi | Validasi Form | Upload Pembayaran |
-|------------------|--------------|-------------------|
-| ![](static/img/Screenshot%20(58).png) | ![](static/img/Screenshot%20(59).png) | ![](static/img/Screenshot%20(60).png) |
+| Dashboard User | Dashboard User |
+|----------------|----------------|
+| ![](static/img/Screenshot%20(57).png) | ![](static/img/Screenshot%20(58).png) |
 
-| Dashboard Admin (2) | Dashboard User (2) | Laporan (2) |
-|---------------------|--------------------|-------------|
-| ![](static/img/Screenshot%20(61).png) | ![](static/img/Screenshot%20(62).png) | ![](static/img/Screenshot%20(63).png) |
+| Halaman Pembayaran |
+|--------------------|
+| ![](static/img/Screenshot%20(59).png) |
 
-| Bukti Pembayaran (2) |
-|----------------------|
+| Formulir Pendaftaran | Formulir Pendaftaran | Formulir Pendaftaran |
+|----------------------|----------------------|----------------------|
+| ![](static/img/Screenshot%20(60).png) | ![](static/img/Screenshot%20(61).png) | ![](static/img/Screenshot%20(62).png) |
+
+| Detail User (Admin) |
+|---------------------|
+| ![](static/img/Screenshot%20(63).png) |
+
+| Bukti Pembayaran (Admin) |
+|--------------------------|
 | ![](static/img/Screenshot%20(64).png) |
 
 > **Catatan:**
