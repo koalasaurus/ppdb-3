@@ -122,22 +122,29 @@ def form(user_id):
         user.religion = request.form.get('religion')
 
         # Proses unggahan file ijazah
-        if 'ijazah' in request.files:
-            ijazah = request.files['ijazah']
-            if ijazah and allowed_file(ijazah.filename):
+        ijazah = request.files.get('ijazah')
+        if ijazah and ijazah.filename:
+            if allowed_file(ijazah.filename):
+                os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
                 filename = secure_filename(f"{user.id}_ijazah_{ijazah.filename}")
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 ijazah.save(filepath)
                 user.ijazah = f"uploads/{filename}"
-
+                print("Ijazah berhasil diupload:", user.ijazah)
+            else:
+                flash('File ijazah tidak valid. Hanya file PNG, JPG, JPEG yang diperbolehkan.')
+                return redirect(url_for('form', user_id=user_id))
         # Proses unggahan file kartu keluarga
-        if 'kk' in request.files:
-            kk = request.files['kk']
-            if kk and allowed_file(kk.filename):
+        kk = request.files.get('kk')
+        if kk and kk.filename:
+            if allowed_file(kk.filename):
                 filename = secure_filename(f"{user.id}_kk_{kk.filename}")
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 kk.save(filepath)
                 user.kk = f"uploads/{filename}"
+            else:
+                flash('File KK tidak valid. Hanya file PNG, JPG, JPEG yang diperbolehkan.')
+                return redirect(url_for('form', user_id=user_id))
 
         db.session.commit()
         flash('Formulir berhasil disimpan.')
