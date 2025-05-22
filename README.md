@@ -145,5 +145,9 @@ Berikut adalah beberapa tampilan antarmuka aplikasi PPDB Universitas Sanjaya:
 |--------------------------|
 | ![](static/img/Screenshot%20(64).png) |
 
+| View Dokumen Ijazah/KK (Admin) |
+|-------------------------------|
+| ![](static/img/Screenshot%20(65).png) |
+
 > **Catatan:**
 > Untuk menampilkan gambar di atas, pastikan semua file screenshot sudah berada di folder `static/img/` di dalam root project ini.
